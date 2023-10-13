@@ -47,12 +47,12 @@ public class AuthController {
 
 	@PostMapping("/auth/signin")
 	public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-
 		try {
 			Authentication authentication = authManager
 					.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
 			MyTaikhoanDetails tk = (MyTaikhoanDetails) authentication.getPrincipal();
+
 			String accessToken = jwtUtil.generateAccessToken(tk.tk);
 			AuthResponse response = new AuthResponse(tk.tk.getEmail(), accessToken);
 			response.setMatk(tk.tk.getMatk());

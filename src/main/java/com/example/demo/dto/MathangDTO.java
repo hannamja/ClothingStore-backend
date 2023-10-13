@@ -11,7 +11,7 @@ import com.example.demo.entity.Loaimh;
 import com.example.demo.entity.Nhanhieu;
 
 public class MathangDTO {
-	private Integer mamh;
+	private int mamh;
 	private ChatlieuDTO chatlieuDTO;
 	private LoaimhDTO loaimhDTO;
 	private NhanhieuDTO nhanhieuDTO;
@@ -27,7 +27,7 @@ public class MathangDTO {
 	private List<DanhgiaDTO> danhgias;
 	private List<BinhluanDTO> binhluans;
 	
-	public MathangDTO(Integer mamh, String tenmh) {
+	public MathangDTO(int mamh, String tenmh) {
 		super();
 		this.mamh = mamh;
 		this.tenmh = tenmh;
@@ -35,7 +35,7 @@ public class MathangDTO {
 
 	
 	
-	public MathangDTO(Integer mamh, ChatlieuDTO chatlieuDTO, LoaimhDTO loaimhDTO, NhanhieuDTO nhanhieuDTO, String tenmh,
+	public MathangDTO(int mamh, ChatlieuDTO chatlieuDTO, LoaimhDTO loaimhDTO, NhanhieuDTO nhanhieuDTO, String tenmh,
 			String mota, String trangthai, String cachlam, String phanloai, Integer gia,
 			CtKhuyenmaiDTO chitietKhuyenmaiDTO, List<HinhanhDTO> hinhanhDTOs, List<ChitietMathangDTO> ctMathangs,
 			List<DanhgiaDTO> danhgias, List<BinhluanDTO> binhluans) {
@@ -59,7 +59,7 @@ public class MathangDTO {
 
 
 
-	public MathangDTO(Integer mamh, ChatlieuDTO chatlieuDTO, LoaimhDTO loaimhDTO, NhanhieuDTO nhanhieuDTO, String tenmh,
+	public MathangDTO(int mamh, ChatlieuDTO chatlieuDTO, LoaimhDTO loaimhDTO, NhanhieuDTO nhanhieuDTO, String tenmh,
 			String mota, String trangthai, String cachlam, String phanloai, Integer gia, List<HinhanhDTO> hinhanhDTOs,
 			List<ChitietMathangDTO> ctMathangs) {
 		super();
@@ -135,10 +135,10 @@ public class MathangDTO {
 	public void setGia(Integer gia) {
 		this.gia = gia;
 	}
-	public Integer getMamh() {
+	public int getMamh() {
 		return mamh;
 	}
-	public void setMamh(Integer mamh) {
+	public void setMamh(int mamh) {
 		this.mamh = mamh;
 	}
 	public ChatlieuDTO getChatlieuDTO() {

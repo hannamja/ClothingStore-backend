@@ -16,10 +16,12 @@ import com.example.demo.convert.HinhanhConvert;
 import com.example.demo.convert.MathangConvert;
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.ChitietMathangDTO;
+import com.example.demo.dto.ColorDTO;
 import com.example.demo.dto.HinhanhDTO;
 import com.example.demo.dto.HoadonDTO;
 import com.example.demo.dto.KhachhangDTO;
 import com.example.demo.dto.MathangDTO;
+import com.example.demo.dto.SizeDTO;
 import com.example.demo.entity.CtHoadon;
 import com.example.demo.entity.CtKhuyenmai;
 import com.example.demo.entity.CtMathang;
@@ -217,8 +219,8 @@ public class MathangServiceImpl implements MathangService {
 			MathangDTO temp1 = new MathangDTO();
 			temp1.setMamh(mathang2.getMamh());
 			ctmhDTO.setMathangDTO(temp1);
-			ctmhDTO.setSize(mhDTO.getSize());
-			ctmhDTO.setColor(mhDTO.getColor());
+			ctmhDTO.setSizeDTO(new SizeDTO(mhDTO.getSizeDTO().getMasize(), mhDTO.getSizeDTO().getTensize()));
+			ctmhDTO.setColorDTO(new ColorDTO(mhDTO.getColorDTO().getMamau(), mhDTO.getColorDTO().getMamau()));
 			ctmhDTO.setCurrentNumbeer(mhDTO.getCurrentNumbeer());
 			mhs.add(chitietMathangConvert.toEntity(ctmhDTO));
 		}

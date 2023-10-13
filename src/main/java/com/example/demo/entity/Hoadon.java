@@ -29,25 +29,32 @@ public class Hoadon implements java.io.Serializable {
 	private Nhanvien nhanvien;
 	private Date ngaytao;
 	private Integer tongtien;
+	private Shipper shipper;
 	private Set<CtTrangthai> ctTrangthais = new HashSet<CtTrangthai>(0);
 	private Set<CtHoadon> ctHoadons = new HashSet<CtHoadon>(0);
 
 	public Hoadon() {
 	}
 
-	public Hoadon(Khachhang khachhang, Nhanvien nhanvien, Date ngaytao, Integer tongtien, Set<CtTrangthai> ctTrangthais,
-			Set<CtHoadon> ctHoadons) {
+	
+
+	public Hoadon(Integer mahd, Khachhang khachhang, Nhanvien nhanvien, Date ngaytao, Integer tongtien, Shipper shipper,
+			Set<CtTrangthai> ctTrangthais, Set<CtHoadon> ctHoadons) {
+		super();
+		this.mahd = mahd;
 		this.khachhang = khachhang;
 		this.nhanvien = nhanvien;
 		this.ngaytao = ngaytao;
 		this.tongtien = tongtien;
+		this.shipper = shipper;
 		this.ctTrangthais = ctTrangthais;
 		this.ctHoadons = ctHoadons;
 	}
 
+
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "MAHD", unique = true, nullable = false)
 	public Integer getMahd() {
 		return this.mahd;
@@ -82,10 +89,25 @@ public class Hoadon implements java.io.Serializable {
 	public Date getNgaytao() {
 		return this.ngaytao;
 	}
-
+	
 	public void setNgaytao(Date ngaytao) {
 		this.ngaytao = ngaytao;
 	}
+
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MASHIPPER")
+	public Shipper getShipper() {
+		return shipper;
+	}
+
+
+
+	public void setShipper(Shipper shipper) {
+		this.shipper = shipper;
+	}
+
+
 
 	@Column(name = "TONGTIEN")
 	public Integer getTongtien() {

@@ -24,31 +24,20 @@ public class CtKhuyenmai implements java.io.Serializable {
 	private CtKhuyenmaiId id;
 	private Khuyenmai khuyenmai;
 	private Mathang mathang;
-	private Date ngaybd;
-	private Date ngaykt;
 	private String mucgiam;
 
 	public CtKhuyenmai() {
 	}
 
-	public CtKhuyenmai(CtKhuyenmaiId id, Khuyenmai khuyenmai, Mathang mathang) {
+	public CtKhuyenmai(CtKhuyenmaiId id, Khuyenmai khuyenmai, Mathang mathang, String mucgiam) {
 		this.id = id;
 		this.khuyenmai = khuyenmai;
 		this.mathang = mathang;
-	}
-
-	public CtKhuyenmai(CtKhuyenmaiId id, Khuyenmai khuyenmai, Mathang mathang, Date ngaybd, Date ngaykt,
-			String mucgiam) {
-		this.id = id;
-		this.khuyenmai = khuyenmai;
-		this.mathang = mathang;
-		this.ngaybd = ngaybd;
-		this.ngaykt = ngaykt;
 		this.mucgiam = mucgiam;
 	}
 
-	@EmbeddedId
 
+	@EmbeddedId
 	@AttributeOverrides({ @AttributeOverride(name = "makm", column = @Column(name = "MAKM", nullable = false)),
 			@AttributeOverride(name = "mamh", column = @Column(name = "MAMH", nullable = false)) })
 	public CtKhuyenmaiId getId() {
@@ -79,25 +68,7 @@ public class CtKhuyenmai implements java.io.Serializable {
 		this.mathang = mathang;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "NGAYBD", length = 10)
-	public Date getNgaybd() {
-		return this.ngaybd;
-	}
-
-	public void setNgaybd(Date ngaybd) {
-		this.ngaybd = ngaybd;
-	}
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "NGAYKT", length = 10)
-	public Date getNgaykt() {
-		return this.ngaykt;
-	}
-
-	public void setNgaykt(Date ngaykt) {
-		this.ngaykt = ngaykt;
-	}
+	
 
 	@Column(name = "MUCGIAM", length = 45)
 	public String getMucgiam() {

@@ -4,13 +4,17 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.ChitietHoadonDTO;
 import com.example.demo.dto.ChitietMathangDTO;
+import com.example.demo.dto.ColorDTO;
 import com.example.demo.dto.HoadonDTO;
 import com.example.demo.dto.MathangDTO;
+import com.example.demo.dto.SizeDTO;
+import com.example.demo.entity.Color;
 import com.example.demo.entity.CtHoadon;
 import com.example.demo.entity.CtHoadonId;
 import com.example.demo.entity.CtMathang;
 import com.example.demo.entity.Hoadon;
 import com.example.demo.entity.Mathang;
+import com.example.demo.entity.Size;
 
 @Component
 public class ChitietHoadonConvert {
@@ -21,9 +25,9 @@ public class ChitietHoadonConvert {
 		chitietHoadonDTO.setHoadonDTO(hoadonDTO);
 		ChitietMathangDTO chitietMathangDTO=new ChitietMathangDTO();
 		chitietMathangDTO.setId(ctHoadon.getCtMathang().getId());
-		chitietMathangDTO.setColor(ctHoadon.getCtMathang().getColor());
+		chitietMathangDTO.setColorDTO(new ColorDTO(ctHoadon.getCtMathang().getColor().getMacolor(),ctHoadon.getCtMathang().getColor().getTencolor()));
 		chitietMathangDTO.setCurrentNumbeer(ctHoadon.getCtMathang().getCurrentNumbeer());
-		chitietMathangDTO.setSize(ctHoadon.getCtMathang().getSize());
+		chitietMathangDTO.setSizeDTO(new SizeDTO(ctHoadon.getCtMathang().getSize().getMasize(), ctHoadon.getCtMathang().getSize().getTensize()));
 		MathangDTO mathangDTO=new MathangDTO();
 		mathangDTO.setMamh(ctHoadon.getCtMathang().getMathang().getMamh());
 		mathangDTO.setTenmh(ctHoadon.getCtMathang().getMathang().getTenmh());
@@ -44,10 +48,10 @@ public class ChitietHoadonConvert {
 		mathang.setMamh(chitietHoadonDTO.getChitietMathangDTO().getMathangDTO().getMamh());
 		mathang.setTenmh(chitietHoadonDTO.getChitietMathangDTO().getMathangDTO().getTenmh());
 		ctMathang.setMathang(mathang);
-		ctMathang.setSize(chitietHoadonDTO.getChitietMathangDTO().getSize());
+		ctMathang.setSize(new Size(chitietHoadonDTO.getChitietMathangDTO().getSizeDTO().getMasize() ,chitietHoadonDTO.getChitietMathangDTO().getSizeDTO().getTensize()));
 		ctMathang.setId(chitietHoadonDTO.getChitietMathangDTO().getId());
 		ctMathang.setCurrentNumbeer(chitietHoadonDTO.getChitietMathangDTO().getCurrentNumbeer());
-		ctMathang.setColor(chitietHoadonDTO.getChitietMathangDTO().getColor());
+		ctMathang.setColor(new Color(chitietHoadonDTO.getChitietMathangDTO().getColorDTO().getMamau(),chitietHoadonDTO.getChitietMathangDTO().getColorDTO().getTenmau()));
 		
 		ctHoadon.setCtMathang(ctMathang);
 		ctHoadon.setSoluong(chitietHoadonDTO.getSoluong());

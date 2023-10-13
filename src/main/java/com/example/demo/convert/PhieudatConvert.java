@@ -6,12 +6,14 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.ChitietMathangDTO;
+import com.example.demo.dto.ColorDTO;
 import com.example.demo.dto.CtPhieudatDTO;
 import com.example.demo.dto.ImportDTO;
 import com.example.demo.dto.MathangDTO;
 import com.example.demo.dto.NhacungcapDTO;
 import com.example.demo.dto.NhanvienDTO;
 import com.example.demo.dto.PhieudatDTO;
+import com.example.demo.dto.SizeDTO;
 import com.example.demo.entity.CtPhieudat;
 import com.example.demo.entity.Nhacungcap;
 import com.example.demo.entity.Nhanvien;
@@ -44,7 +46,9 @@ public class PhieudatConvert {
 			CtPhieudatDTO temp = new CtPhieudatDTO();
 			temp.setSoluong(ctpd.getSoluong());
 			temp.setDongia(ctpd.getDongia());
-			temp.setCtMathangDTOs(new ChitietMathangDTO(ctpd.getCtMathang().getId(),ctpd.getCtMathang().getColor(),ctpd.getCtMathang().getSize(), ctpd.getCtMathang().getCurrentNumbeer(),new MathangDTO(ctpd.getCtMathang().getMathang().getMamh(), ctpd.getCtMathang().getMathang().getTenmh())));
+			ColorDTO colorDTO = new ColorDTO(ctpd.getCtMathang().getColor().getMacolor(), ctpd.getCtMathang().getColor().getTencolor());
+			SizeDTO sizeDTO = new SizeDTO(ctpd.getCtMathang().getSize().getMasize(),ctpd.getCtMathang().getSize().getTensize());
+			temp.setCtMathangDTOs(new ChitietMathangDTO(ctpd.getCtMathang().getId(),colorDTO,sizeDTO, ctpd.getCtMathang().getCurrentNumbeer(),new MathangDTO(ctpd.getCtMathang().getMathang().getMamh(), ctpd.getCtMathang().getMathang().getTenmh())));
 			ctPhieudatDTOs.add(temp);
 		}
 		phieudatDTO.setCtPhieudatDTOs(ctPhieudatDTOs);

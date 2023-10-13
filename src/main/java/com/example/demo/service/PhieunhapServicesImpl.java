@@ -13,11 +13,9 @@ import com.example.demo.convert.ChitietMathangConvert;
 import com.example.demo.convert.CtPhieuNhapConvert;
 import com.example.demo.convert.HoadonConvert;
 import com.example.demo.convert.ImportConvert;
-import com.example.demo.dto.ChitietHoadonDTO;
 import com.example.demo.dto.CtPhieunhapDTO;
 import com.example.demo.dto.HoadonDTO;
 import com.example.demo.dto.ImportDTO;
-import com.example.demo.entity.CtMathang;
 import com.example.demo.entity.CtPhieunhap;
 import com.example.demo.entity.CtPhieunhapId;
 import com.example.demo.entity.Hoadon;
@@ -43,7 +41,6 @@ public class PhieunhapServicesImpl implements PhieunhapService {
 	ChitietMathangConvert chitietMathangConvert;
 	@Autowired
 	private CtPhieunhapRepository ctPhieunhapRepository;
-	@Autowired ChitietMathangRepository chitietMathangRepository;
 	
 	@Override
 	public List<ImportDTO> getAllPhieunhap() {
@@ -61,14 +58,6 @@ public class PhieunhapServicesImpl implements PhieunhapService {
 		// TODO Auto-generated method stub
 		Phieunhap phieunhap = importConvert.toEntity(phieunhapDTO);
 		Phieunhap phieunhapSaved = phieunhapRepository.save(phieunhap);
-		
-		List<CtPhieunhapDTO> cthds = phieunhapDTO.getCtPhieunhapDTOs();
-		for (CtPhieunhapDTO cthd : cthds) {
-			Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getCtMathangDTO().getId());
-			CtMathang mh = temp.get();
-			mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
-			chitietMathangRepository.save(mh);
-		}
 		
 		List<CtPhieunhap> ctpns = new ArrayList<CtPhieunhap>();
 		for(CtPhieunhapDTO ctpn : phieunhapDTO.getCtPhieunhapDTOs()) {

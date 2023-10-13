@@ -1,11 +1,15 @@
 package com.example.demo.entity;
 // Generated Jul 11, 2023, 9:57:41 PM by Hibernate Tools 4.3.5.Final
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -16,7 +20,7 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "size", uniqueConstraints = @UniqueConstraint(columnNames = "TENSIZE"))
 public class Size implements java.io.Serializable {
 
-	private Integer masize;
+	private String masize;
 	private String tensize;
 
 	public Size() {
@@ -25,16 +29,22 @@ public class Size implements java.io.Serializable {
 	public Size(String tensize) {
 		this.tensize = tensize;
 	}
+	
+
+	public Size(String masize, String tensize) {
+		super();
+		this.masize = masize;
+		this.tensize = tensize;
+	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "MASIZE", unique = true, nullable = false)
-	public Integer getMasize() {
+	public String getMasize() {
 		return this.masize;
 	}
 
-	public void setMasize(Integer masize) {
+	public void setMasize(String masize) {
 		this.masize = masize;
 	}
 

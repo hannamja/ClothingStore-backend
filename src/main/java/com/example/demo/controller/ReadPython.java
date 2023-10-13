@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadPython {
 	public String ReadPython(Double ProductBrand, Double Material, Double ProductionWay) throws IOException, InterruptedException {
-		String data = "D:\\tttn2019-backend\\demo\\src\\main\\resources\\python\\AI.sav";
+		String data = "C:\\Users\\ADMIN\\Downloads\\TTTN2023\\demo\\demo\\src\\main\\resources\\python\\AI.sav";
 		ProcessBuilder pb = new ProcessBuilder("python",
-				"D:\\tttn2019-backend\\demo\\src\\main\\resources\\python\\load_AI.py",
+				"C:\\Users\\ADMIN\\Downloads\\TTTN2023\\demo\\demo\\src\\main\\resources\\python\\load_AI.py",
 				data, ProductBrand.toString(),Material.toString(),ProductionWay.toString());
 		Process p = pb.start();
 		p.waitFor();

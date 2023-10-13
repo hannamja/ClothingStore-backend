@@ -47,7 +47,7 @@ public class KhuyenmaiServiceImpl implements KhuyenmaiService {
 		Khuyenmai kmSaved = khuyenmaiRepository.save(khuyenmaiconvert.toEntity(km));
 		List<CtKhuyenmai> ctkms = new ArrayList<CtKhuyenmai>();
 		for(CtKhuyenmaiDTO kmDTo : km.getCtKhuyenmais()) {
-			ctkms.add(new CtKhuyenmai(new CtKhuyenmaiId(kmSaved.getMakm(), kmDTo.getId().getMamh()), kmSaved, new Mathang(kmDTo.getId().getMamh()), kmDTo.getNgaybd(),kmDTo.getNgaykt(), kmDTo.getMucgiam()));
+			ctkms.add(new CtKhuyenmai(new CtKhuyenmaiId(kmSaved.getMakm(), kmDTo.getId().getMamh()), kmSaved, new Mathang(kmDTo.getId().getMamh()), kmDTo.getMucgiam()));
 		}
 		if(ctKhuyenmaiRepository.getKhuyenmai1(km.getMakm())!=null) {
 			ctKhuyenmaiRepository.deleteAll(ctKhuyenmaiRepository.getKhuyenmai1(km.getMakm()));

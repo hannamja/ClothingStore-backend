@@ -50,7 +50,6 @@ public class MathangController {
 	@GetMapping("/mathang")
 	public ResponseEntity<List<MathangDTO>> getAllMathang(){
 		List<MathangDTO> mathangDTOs=mathangService.getAllMathang();
-		System.out.print(mathangDTOs.size());
 		if (mathangDTOs.isEmpty()) {
 			return new ResponseEntity<List<MathangDTO>>(HttpStatus.NOT_FOUND);
 		}
@@ -68,7 +67,6 @@ public class MathangController {
 	public ResponseEntity<Object> getMHById(@PathVariable int id){
 		MathangDTO mathangDTO=mathangService.findById(id);
 		if (mathangDTO==null) {
-			System.out.println(mathangDTO);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(HttpStatus.NOT_FOUND.value(), "Mat hang khong ton tai", null));
 		}
 //		return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.value(), "Khach hang id la",
@@ -130,7 +128,6 @@ public class MathangController {
 			   ProductBrand=0.2D;
 		   }
 		   String label2=  readPython.ReadPython(ProductBrand, Material, ProductionWay);
-		   System.out.print(label2);
 		   String label1="";
 		   if (label2.equals("0")) {
 			label1="BINH DAN";
@@ -148,7 +145,7 @@ public class MathangController {
         currentDate.setYear(year - 1900);
         currentDate.setMonth(month - 1);
         currentDate.setDate(day);
-        mathangDTO.setPhanloai(label1);
+        if(mathangDTO.getPhanloai()== null)mathangDTO.setPhanloai(label1);
 		MathangDTO mathangDTO2= mathangService.save(mathangDTO,1,currentDate);
 		List<HinhanhDTO> hinhanhDTOs=mathangDTO.getHinhanhDTOs();
 		

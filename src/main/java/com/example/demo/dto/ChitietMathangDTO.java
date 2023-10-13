@@ -1,19 +1,20 @@
 package com.example.demo.dto;
 
+
 import com.example.demo.entity.Mathang;
 
 public class ChitietMathangDTO {
 	private Integer id;
-	private String color;
-	private String size;
+	private ColorDTO colorDTO;
+	private SizeDTO sizeDTO;
 	private String currentNumbeer;
 	private MathangDTO mathangDTO;
 	
-	public ChitietMathangDTO(Integer id, String color, String size, String currentNumbeer, MathangDTO mathangDTO) {
+	public ChitietMathangDTO(Integer id, ColorDTO color, SizeDTO size, String currentNumbeer, MathangDTO mathangDTO) {
 		super();
 		this.id = id;
-		this.color = color;
-		this.size = size;
+		this.colorDTO = color;
+		this.sizeDTO = size;
 		this.currentNumbeer = currentNumbeer;
 		this.mathangDTO = mathangDTO;
 	}
@@ -33,17 +34,17 @@ public class ChitietMathangDTO {
 		this.id = id;
 	}
 	
-	public String getColor() {
-		return color;
+	public ColorDTO getColorDTO() {
+		return colorDTO;
 	}
-	public void setColor(String color) {
-		this.color = color;
+	public void setColorDTO(ColorDTO color) {
+		this.colorDTO = color;
 	}
-	public String getSize() {
-		return size;
+	public SizeDTO getSizeDTO() {
+		return sizeDTO;
 	}
-	public void setSize(String size) {
-		this.size = size;
+	public void setSizeDTO(SizeDTO size) {
+		this.sizeDTO = size;
 	}
 	public String getCurrentNumbeer() {
 		return currentNumbeer;
