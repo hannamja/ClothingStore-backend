@@ -28,9 +28,12 @@ public class ChitietMathangConvert {
 	public CtMathang toEntity(ChitietMathangDTO chitietMathangDTO) {
 		CtMathang ctMathang=new CtMathang();
 		ctMathang.setId(chitietMathangDTO.getId());
-		ctMathang.setColor(new Color(chitietMathangDTO.getColorDTO().getMamau(), chitietMathangDTO.getColorDTO().getTenmau()));
-		ctMathang.setSize(new Size(chitietMathangDTO.getSizeDTO().getMasize(), chitietMathangDTO.getSizeDTO().getTensize()));
+		Color color = new Color(chitietMathangDTO.getColorDTO().getMacolor(), chitietMathangDTO.getColorDTO().getTencolor());
+		Size size = new Size(chitietMathangDTO.getSizeDTO().getMasize(), chitietMathangDTO.getSizeDTO().getTensize());
+		ctMathang.setColor(color);
+		ctMathang.setSize(size);
 		ctMathang.setCurrentNumbeer(chitietMathangDTO.getCurrentNumbeer());
+		
 		Mathang mathang=new Mathang();
 		mathang.setMamh(chitietMathangDTO.getMathangDTO().getMamh());
 		mathang.setTenmh(chitietMathangDTO.getMathangDTO().getTenmh());

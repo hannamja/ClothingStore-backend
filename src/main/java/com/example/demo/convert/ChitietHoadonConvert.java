@@ -51,7 +51,7 @@ public class ChitietHoadonConvert {
 		ctMathang.setSize(new Size(chitietHoadonDTO.getChitietMathangDTO().getSizeDTO().getMasize() ,chitietHoadonDTO.getChitietMathangDTO().getSizeDTO().getTensize()));
 		ctMathang.setId(chitietHoadonDTO.getChitietMathangDTO().getId());
 		ctMathang.setCurrentNumbeer(chitietHoadonDTO.getChitietMathangDTO().getCurrentNumbeer());
-		ctMathang.setColor(new Color(chitietHoadonDTO.getChitietMathangDTO().getColorDTO().getMamau(),chitietHoadonDTO.getChitietMathangDTO().getColorDTO().getTenmau()));
+		ctMathang.setColor(new Color(chitietHoadonDTO.getChitietMathangDTO().getColorDTO().getMacolor(),chitietHoadonDTO.getChitietMathangDTO().getColorDTO().getTencolor()));
 		
 		ctHoadon.setCtMathang(ctMathang);
 		ctHoadon.setSoluong(chitietHoadonDTO.getSoluong());

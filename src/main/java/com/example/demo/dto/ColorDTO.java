@@ -1,27 +1,35 @@
 package com.example.demo.dto;
 
+import javax.persistence.Column;
+
 public class ColorDTO {
-	private String mamau;
-	private String tenmau;
-	public String getMamau() {
-		return mamau;
-	}
-	public void setMamau(String mamau) {
-		this.mamau = mamau;
-	}
-	public String getTenmau() {
-		return tenmau;
-	}
-	public void setTenmau(String tenmau) {
-		this.tenmau = tenmau;
-	}
-	public ColorDTO(String mamau, String tenmau) {
-		super();
-		this.mamau = mamau;
-		this.tenmau = tenmau;
-	}
+	private String macolor;
+	private String tencolor;
+	
 	public ColorDTO() {
 		super();
+	}
+
+	public String getMacolor() {
+		return macolor;
+	}
+
+	public void setMacolor(String macolor) {
+		this.macolor = macolor;
+	}
+
+	public String getTencolor() {
+		return tencolor;
+	}
+
+	public void setTencolor(String tencolor) {
+		this.tencolor = tencolor;
+	}
+
+	public ColorDTO(String macolor, String tencolor) {
+		super();
+		this.macolor = macolor;
+		this.tencolor = tencolor;
 	}
 	
 	

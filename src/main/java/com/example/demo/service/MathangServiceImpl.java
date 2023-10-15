@@ -14,6 +14,7 @@ import com.example.demo.convert.ChitietMathangConvert;
 import com.example.demo.convert.DanhgiaConvert;
 import com.example.demo.convert.HinhanhConvert;
 import com.example.demo.convert.MathangConvert;
+import com.example.demo.dto.ApiRes;
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.ChitietMathangDTO;
 import com.example.demo.dto.ColorDTO;
@@ -30,6 +31,8 @@ import com.example.demo.entity.GiaId;
 import com.example.demo.entity.Hinhanhmh;
 import com.example.demo.entity.Mathang;
 import com.example.demo.entity.Nhanvien;
+import com.example.demo.errcode.ApiErrCode;
+import com.example.demo.errcode.ApiErrCodeEnumMap;
 import com.example.demo.repository.BinhluanRepository;
 import com.example.demo.repository.ChitietHoadonRepository;
 import com.example.demo.repository.ChitietMathangRepository;
@@ -41,6 +44,8 @@ import com.example.demo.repository.MathangRepository;
 
 @Service
 public class MathangServiceImpl implements MathangService {
+	@Autowired
+	private ApiErrCodeEnumMap apiErr;
 	@Autowired
 	private MathangRepository mathangRepository;
 	@Autowired
@@ -57,12 +62,10 @@ public class MathangServiceImpl implements MathangService {
 	private BinhluanRepository binhluanRepository;
 	@Autowired
 	private DanhgiaRepository danhgiaRepository;
-
 	@Autowired
 	private CtKhuyenmaiRepository ctKhuyenmaiRepository;
 	@Autowired
 	private ChitietHoadonRepository chitietHoadonRepository;
-
 	@Autowired
 	private ChitietMathangService chitietMathangService;
 	@Autowired
@@ -167,69 +170,85 @@ public class MathangServiceImpl implements MathangService {
 	}
 
 	@Override
-	public MathangDTO save(MathangDTO mathangDTO, Integer id, Date date1) {
+	public ApiRes save(MathangDTO mathangDTO, Integer id, Date date1) {
 		// TODO Auto-generated method stub
-		Mathang mathang = mathangConvert.toEntity(mathangDTO);
-		Mathang mathang2 = mathangRepository.save(mathang);
-		Gia gia = new Gia();
-		gia.setGia(mathangDTO.getGia());
-		Nhanvien nhanvien = new Nhanvien();
-		nhanvien.setManv(id);
-		gia.setNhanvien(nhanvien);
-		gia.setMathang(mathang2);
-		GiaId giaId = new GiaId();
-		giaId.setMamh(mathang2.getMamh());
-		giaId.setManv(id);
-		Date date = new Date();
-		giaId.setNgayapdung(date);
-		gia.setId(giaId);
-		gia.setNgaykt(date1);
-		Gia temp = new Gia();
-		temp = giaRepository.getBanggiaLast(mathang.getMamh());
-		if (temp != null) {
-			if (temp.getNgaykt().compareTo(new Date()) >= 0) {
-				System.out.println(temp.getMathang().getTenmh());
-				try {
-					giaRepository.delete(temp);
-					giaRepository.save(gia);
-				} catch (Exception e) {
-					// TODO: handle exception
-					System.out.print("Lỗi giá");
+		try {
+			Mathang mathang = mathangConvert.toEntity(mathangDTO);
+			Mathang mathang2 = mathangRepository.save(mathang);
+			Gia gia = new Gia();
+			gia.setGia(mathangDTO.getGia());
+			Nhanvien nhanvien = new Nhanvien();
+			nhanvien.setManv(id);
+			gia.setNhanvien(nhanvien);
+			gia.setMathang(mathang2);
+			GiaId giaId = new GiaId();
+			giaId.setMamh(mathang2.getMamh());
+			giaId.setManv(id);
+			Date date = new Date();
+			giaId.setNgayapdung(date);
+			gia.setId(giaId);
+			gia.setNgaykt(date1);
+			Gia temp = new Gia();
+			temp = giaRepository.getBanggiaLast(mathang.getMamh());
+			if (temp != null) {
+				if (temp.getNgaykt().compareTo(new Date()) >= 0) {
+					System.out.println(temp.getMathang().getTenmh());
+					try {
+						giaRepository.delete(temp);
+						giaRepository.save(gia);
+					} catch (Exception e) {
+						// TODO: handle exception
+						System.out.print("Lỗi giá");
+					}
 				}
+				;
 			}
-			;
-		}
-		giaRepository.save(gia);
-		// mathangDTO.setMamh(mathang2.getMamh());
+			giaRepository.save(gia);
+			
+			// mathangDTO.setMamh(mathang2.getMamh());
+			List<HinhanhDTO> hinhanhDTOs = mathangDTO.getHinhanhDTOs();
+			List<Hinhanhmh> hinhanhmhs = new ArrayList<Hinhanhmh>();
+			for (HinhanhDTO hinhanhDTO : hinhanhDTOs) {
+				MathangDTO mathangDTO2 = new MathangDTO();
+				mathangDTO2.setMamh(mathang2.getMamh());
+				hinhanhDTO.setMaha(hinhanhDTO.getMaha());
+				hinhanhDTO.setMathangDTO(mathangDTO2);
+				hinhanhmhs.add(hinhanhConvert.toEntity(hinhanhDTO));
+			}
+			hinhanhRepository.saveAll(hinhanhmhs);
 
-		List<HinhanhDTO> hinhanhDTOs = mathangDTO.getHinhanhDTOs();
-		List<Hinhanhmh> hinhanhmhs = new ArrayList<Hinhanhmh>();
-		for (HinhanhDTO hinhanhDTO : hinhanhDTOs) {
-			MathangDTO mathangDTO2 = new MathangDTO();
-			mathangDTO2.setMamh(mathang2.getMamh());
-			hinhanhDTO.setMaha(hinhanhDTO.getMaha());
-			hinhanhDTO.setMathangDTO(mathangDTO2);
-			hinhanhmhs.add(hinhanhConvert.toEntity(hinhanhDTO));
+			List<CtMathang> mhs = new ArrayList<CtMathang>();
+			for (ChitietMathangDTO mhDTO : mathangDTO.getCtMathangs()) {
+				ChitietMathangDTO ctmhDTO = new ChitietMathangDTO();
+				MathangDTO temp1 = new MathangDTO();
+				temp1.setMamh(mathang2.getMamh());
+				ctmhDTO.setMathangDTO(temp1);
+				
+				ColorDTO temp2 = new ColorDTO();
+				SizeDTO temp3 = new SizeDTO();
+				temp2.setMacolor(mhDTO.getColorDTO().getMacolor());
+				temp3.setMasize(mhDTO.getSizeDTO().getMasize());
+				ctmhDTO.setSizeDTO(temp3);
+				ctmhDTO.setColorDTO(temp2);
+				ctmhDTO.setCurrentNumbeer(mhDTO.getCurrentNumbeer());
+				mhs.add(chitietMathangConvert.toEntity(ctmhDTO));
+			}
+			if (chitietMathangService.getCtMathang(mathangDTO.getMamh()) != null) {
+				List<CtMathang> ctMathangs = chitietMathangRepository.getCTMathang(mathangDTO.getMamh());
+				chitietMathangRepository.deleteAll(ctMathangs);
+			}
+			
+			List<CtMathang> l = chitietMathangRepository.saveAll(mhs);
+			for (CtMathang ct : l) {
+				System.out.print(ct.getSize().getMasize());
+				System.out.print(ct.getColor().getMacolor());
+				System.out.print(ct.getCurrentNumbeer());
+			}
+			return new ApiRes(ApiErrCode.SAVE_SUCCESS.toString(),apiErr.getApiErrCode().get(ApiErrCode.SAVE_SUCCESS), modelMapper.map(mathang2, MathangDTO.class));
 		}
-		hinhanhRepository.saveAll(hinhanhmhs);
-
-		List<CtMathang> mhs = new ArrayList<CtMathang>();
-		for (ChitietMathangDTO mhDTO : mathangDTO.getCtMathangs()) {
-			ChitietMathangDTO ctmhDTO = new ChitietMathangDTO();
-			MathangDTO temp1 = new MathangDTO();
-			temp1.setMamh(mathang2.getMamh());
-			ctmhDTO.setMathangDTO(temp1);
-			ctmhDTO.setSizeDTO(new SizeDTO(mhDTO.getSizeDTO().getMasize(), mhDTO.getSizeDTO().getTensize()));
-			ctmhDTO.setColorDTO(new ColorDTO(mhDTO.getColorDTO().getMamau(), mhDTO.getColorDTO().getMamau()));
-			ctmhDTO.setCurrentNumbeer(mhDTO.getCurrentNumbeer());
-			mhs.add(chitietMathangConvert.toEntity(ctmhDTO));
+		catch(Exception e ) {
+			return new ApiRes(ApiErrCode.CONNECT_ERROR.toString(),apiErr.getApiErrCode().get(ApiErrCode.CONNECT_ERROR), null);
 		}
-		if (chitietMathangService.getCtMathang(mathangDTO.getMamh()) != null) {
-			List<CtMathang> ctMathangs = chitietMathangRepository.getCTMathang(mathangDTO.getMamh());
-			chitietMathangRepository.deleteAll(ctMathangs);
-		}
-		chitietMathangRepository.saveAll(mhs);
-		return modelMapper.map(mathang2, MathangDTO.class);
 	}
 
 	@Override

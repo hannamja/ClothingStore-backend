@@ -78,7 +78,7 @@ public class CtMathang implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MACOLOR", nullable = false, insertable=false, updatable=false)
+	@JoinColumn(name = "MACOLOR")
 	public Color getColor() {
 		return this.color;
 	}
@@ -88,7 +88,7 @@ public class CtMathang implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MASIZE", nullable = false, insertable=false, updatable=false)
+	@JoinColumn(name = "MASIZE")
 	public Size getSize() {
 		return this.size;
 	}
