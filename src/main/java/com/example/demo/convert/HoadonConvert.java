@@ -20,6 +20,7 @@ import com.example.demo.dto.HoadonDTO;
 import com.example.demo.dto.KhachhangDTO;
 import com.example.demo.dto.MathangDTO;
 import com.example.demo.dto.NhanvienDTO;
+import com.example.demo.dto.ShipperDTO;
 import com.example.demo.dto.SizeDTO;
 import com.example.demo.dto.TrangThaihdDTO;
 import com.example.demo.entity.CtHoadon;
@@ -30,35 +31,49 @@ import com.example.demo.entity.Hoadon;
 import com.example.demo.entity.Khachhang;
 import com.example.demo.entity.Mathang;
 import com.example.demo.entity.Nhanvien;
+import com.example.demo.entity.Shipper;
+import com.example.demo.entity.Taikhoan;
 import com.example.demo.entity.Trangthaihd;
 
 @Component
 public class HoadonConvert {
 	@Autowired
 	private ModelMapper modelMapper;
+	
 	public HoadonDTO toDTO(Hoadon hoadon,CtTrangthai ctTrangthai,List<CtHoadon> ctHoadon) {
 		HoadonDTO hoadonDTO=new HoadonDTO();
 		hoadonDTO.setMahd(hoadon.getMahd());
 		hoadonDTO.setNgaytao(hoadon.getNgaytao());
 		hoadonDTO.setTongtien(hoadon.getTongtien());
+		
 		KhachhangDTO khachhangDTO=new KhachhangDTO();
 		khachhangDTO.setMakh(hoadon.getKhachhang().getMakh());
 		khachhangDTO.setHotenkh(hoadon.getKhachhang().getHotenkh());
 		khachhangDTO.setEmail(hoadon.getKhachhang().getEmail());
 		hoadonDTO.setKhachhang(khachhangDTO);
-		NhanvienDTO nhanvienDTO=new NhanvienDTO();
-		if (hoadon.getNhanvien()!=null && hoadon.getNhanvien().getManv()!=null) {
-			nhanvienDTO.setManv(hoadon.getNhanvien().getManv());
-			hoadonDTO.setNhanvien(nhanvienDTO);
-		}else {
-			hoadonDTO.setNhanvien(nhanvienDTO);
+		
+		if(hoadon.getNhanvien() != null && hoadon.getShipper()!=null) {
+			NhanvienDTO nv = new NhanvienDTO();
+			nv.setManv(hoadon.getNhanvien().getManv());
+			hoadonDTO.setNhanvien(nv);
+			
+			ShipperDTO s = new ShipperDTO();
+			s.setMashipper(hoadon.getShipper().getMashipper());
+			hoadonDTO.setShipper(s);
 		}
+		else {
+			hoadonDTO.setNhanvien(null);
+			hoadonDTO.setShipper(null);
+		}
+		
 		ChitietTrangThaiDTO chitietTrangThaiDTO= new ChitietTrangThaiDTO();
 		chitietTrangThaiDTO.setNgaytao(ctTrangthai.getNgaytao());
+		
 		TrangThaihdDTO trangThaihdDTO=new TrangThaihdDTO();
 		trangThaihdDTO.setMatthd(ctTrangthai.getTrangthaihd().getMatthd());
 		trangThaihdDTO.setTrangthai(ctTrangthai.getTrangthaihd().getTrangthai());
 		chitietTrangThaiDTO.setTrangthai(trangThaihdDTO);
+		
 		HoadonDTO hoadonDTO3=new HoadonDTO();
 		hoadonDTO3.setMahd(ctTrangthai.getHoadon().getMahd());
 		chitietTrangThaiDTO.setHoadonDTO(hoadonDTO3);
@@ -99,18 +114,34 @@ public class HoadonConvert {
 		hoadon.setMahd(hoadonDTO.getMahd());
 		hoadon.setNgaytao(hoadonDTO.getNgaytao());
 		hoadon.setTongtien(hoadonDTO.getTongtien());
+		
 		Khachhang khachhang=new Khachhang();
 		khachhang.setMakh(hoadonDTO.getKhachhang().getMakh());
 		hoadon.setKhachhang(khachhang);
-		Nhanvien nhanvien=new Nhanvien();
-		nhanvien.setManv(hoadonDTO.getNhanvien().getManv());
-		hoadon.setNhanvien(nhanvien);
+		
+		if(hoadonDTO.getNhanvien() != null && hoadonDTO.getShipper()!=null) {
+			Nhanvien nv = new Nhanvien();
+			nv.setManv(hoadonDTO.getNhanvien().getManv());
+			nv.setTaikhoan(null);
+			hoadon.setNhanvien(nv);
+			
+			Shipper s = new Shipper();
+			s.setMashipper(hoadonDTO.getShipper().getMashipper());
+			hoadon.setShipper(s);
+		}
+		else {
+			hoadon.setNhanvien(null);
+			hoadon.setShipper(null);
+		}
+		
 		Set<CtTrangthai> ctTrangthai=new HashSet<CtTrangthai>();
 		CtTrangthai ctTrangthai2=new CtTrangthai();
+		
 		Hoadon hoadon2=new Hoadon();
 		hoadon2.setMahd(hoadonDTO.getMahd());
 		ctTrangthai2.setHoadon(hoadon2);
 		ctTrangthai2.setNgaytao(hoadonDTO.getChitietTrangThaiDTO().getNgaytao());
+		
 		Trangthaihd trangthaihd=new Trangthaihd();
 		trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
 		trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());

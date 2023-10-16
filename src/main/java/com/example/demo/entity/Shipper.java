@@ -21,17 +21,15 @@ public class Shipper {
 	private String tenshipper;
 	private String diachi;
 	private String sdt;
-	private List<Hoadon> hds;
 	
 	public Shipper() {
 		
 	}
 
-	public Shipper(String mashipper, String tenshipper, List<Hoadon> hds) {
+	public Shipper(String mashipper, String tenshipper) {
 		super();
 		this.mashipper = mashipper;
 		this.tenshipper = tenshipper;
-		this.hds = hds;
 	}
 	
 	@Id
@@ -52,15 +50,6 @@ public class Shipper {
 
 	public void setTenshipper(String tenshipper) {
 		this.tenshipper = tenshipper;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "shipper")
-	public List<Hoadon> getHds() {
-		return hds;
-	}
-
-	public void setHds(List<Hoadon> hds) {
-		this.hds = hds;
 	}
 
 	@Column(name = "DIACHI")
