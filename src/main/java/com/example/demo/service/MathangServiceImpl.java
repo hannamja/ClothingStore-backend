@@ -84,20 +84,22 @@ public class MathangServiceImpl implements MathangService {
 		List<MathangDTO> mathangDTOs = new ArrayList<MathangDTO>();
 		for (Mathang mh : list) {
 			List<CtKhuyenmai> temp = ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh());
-			if (mh.getTrangthai().equals("0"))
+			Gia gia = giaRepository.getBanggiaLast(mh.getMamh());
+			if (mh.getTrangthai().equals("0") && gia !=null)
 				if (temp.size() == 0)
-					mathangDTOs.add(mathangConvert.toDTO(mh, giaRepository.getBanggiaLast(mh.getMamh()),
+					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
 							hinhanhRepository.getHAByMH(mh.getMamh()),
 							chitietMathangRepository.getCTMathang(mh.getMamh()),
 							binhluanRepository.getBinhluan(mh.getMamh()), danhgiaRepository.getDanhgia(mh.getMamh()),
 							null));
 				else
-					mathangDTOs.add(mathangConvert.toDTO(mh, giaRepository.getBanggiaLast(mh.getMamh()),
+					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
 							hinhanhRepository.getHAByMH(mh.getMamh()),
 							chitietMathangRepository.getCTMathang(mh.getMamh()),
 							binhluanRepository.getBinhluan(mh.getMamh()), danhgiaRepository.getDanhgia(mh.getMamh()),
 							ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh()).get(0)));
 		}
+		if(mathangDTOs.size()>20) return mathangDTOs.subList(0, 19);
 		return mathangDTOs;
 	}
 
