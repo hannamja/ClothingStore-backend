@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -208,8 +209,11 @@ public class HoadonServiceImpl implements HoadonService {
 		ctTrangthaiId.setMahd(hoadon2.getMahd());
 		ctTrangthaiId.setMatthd(3);
 		ctTrangthai.setId(ctTrangthaiId);
-		chitietTrangThaiRepository.save(ctTrangthai);
 		
+		CtTrangthai returnedCtTrangthai =  chitietTrangThaiRepository.save(ctTrangthai);
+		hoadon2.setCtTrangthais(new HashSet<>());
+		hoadon2.getCtTrangthais().add(returnedCtTrangthai);
+		// Nếu dto trả về mà có trạng thái là đã duyệt hàng thành công thì trả về thông báo thành công, ngược lại trả về thông báo lỗi
 		return modelMapper.map(hoadon2, HoadonDTO.class);
 	}
 

@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.websocket.server.PathParam;
 
@@ -17,12 +19,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.HoadonDTO;
 import com.example.demo.entity.Hoadon;
+import com.example.demo.errors.HoaDonMessages;
 import com.example.demo.service.HoadonService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class HoadonController {
+	public static Map<HoaDonMessages, String> hoadonMessages =  new HashMap<>();	
+	
+	static {
+		hoadonMessages.put(HoaDonMessages.BILL_CANCELED_SUCCESS, "Hủy đơn thành công");
+		hoadonMessages.put(HoaDonMessages.BILL_CANCELED_FAIL, "Hủy đơn thất bại");
+		hoadonMessages.put(HoaDonMessages.BILL_CONFIRMED_SUCCESS, "Duyệt đơn thành công");
+		hoadonMessages.put(HoaDonMessages.BILL_CONFIRMED_FAIL, "Duyệt đơn thất bại");
+		hoadonMessages.put(HoaDonMessages.BILL_PROCESSED_SUCESS, "Xác nhận đang giao thành công");
+		hoadonMessages.put(HoaDonMessages.BILL_PROCESSED_FAIL, "Xác nhận đang giao thất bại");
+		hoadonMessages.put(HoaDonMessages.BILL_DELIVERED_SUCCESS, "Xác nhận giao hàng thành công");
+		hoadonMessages.put(HoaDonMessages.BILL_DELIVERED_FAIL, "Xác nhận giao hàng thất bại");
+	}
 	@Autowired
 	private HoadonService hoadonService;
 	@Autowired
@@ -52,6 +67,10 @@ public class HoadonController {
 	public HoadonDTO cancelHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.cancel(hoadonDTO);
 	}
+	// @PostMapping("/hoadon/confirm")
+	// public Map<String, Object> confirmHoaDon(@RequestBody HoadonDTO hoadonDTO) {
+	// 	Map
+	// }
 	@PostMapping("/hoadon/confirm")
 	public HoadonDTO confirmHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.confirm(hoadonDTO);
@@ -62,6 +81,7 @@ public class HoadonController {
 	}
 	@PostMapping("/hoadon/complete")
 	public HoadonDTO completeHoadon(@RequestBody HoadonDTO hoadonDTO) {
+	
 		return hoadonService.complete(hoadonDTO);
 	}
 }
