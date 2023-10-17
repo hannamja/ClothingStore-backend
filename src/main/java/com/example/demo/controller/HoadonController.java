@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ApiRes;
 import com.example.demo.dto.HoadonDTO;
 import com.example.demo.entity.Hoadon;
 import com.example.demo.errors.HoaDonMessages;
@@ -63,25 +64,43 @@ public class HoadonController {
 	public HoadonDTO saveHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.save(hoadonDTO);
 	}
+	
+//	@PostMapping("/hoadon/cancel")
+//	public HoadonDTO cancelHoadon(@RequestBody HoadonDTO hoadonDTO) {
+//		return hoadonService.cancel(hoadonDTO);
+//	}
+	
 	@PostMapping("/hoadon/cancel")
-	public HoadonDTO cancelHoadon(@RequestBody HoadonDTO hoadonDTO) {
+	public ApiRes cancelHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.cancel(hoadonDTO);
 	}
 	// @PostMapping("/hoadon/confirm")
 	// public Map<String, Object> confirmHoaDon(@RequestBody HoadonDTO hoadonDTO) {
 	// 	Map
 	// }
+	
+//	@PostMapping("/hoadon/confirm")
+//	public HoadonDTO confirmHoadon(@RequestBody HoadonDTO hoadonDTO) {
+//		return hoadonService.confirm(hoadonDTO);
+//	}
+	
 	@PostMapping("/hoadon/confirm")
-	public HoadonDTO confirmHoadon(@RequestBody HoadonDTO hoadonDTO) {
+	public ApiRes confirmHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.confirm(hoadonDTO);
 	}
+	
 	@PostMapping("/hoadon/processing")
 	public HoadonDTO processingHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.processing(hoadonDTO);
 	}
-	@PostMapping("/hoadon/complete")
-	public HoadonDTO completeHoadon(@RequestBody HoadonDTO hoadonDTO) {
 	
+//	@PostMapping("/hoadon/complete")
+//	public HoadonDTO completeHoadon(@RequestBody HoadonDTO hoadonDTO) {
+//		return hoadonService.complete(hoadonDTO);
+//	}
+	
+	@PostMapping("/hoadon/complete")
+	public ApiRes completeHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.complete(hoadonDTO);
 	}
 }

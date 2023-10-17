@@ -26,7 +26,7 @@ public class ChitietMathangServiceImpl implements ChitietMathangService {
 		List<CtMathang> ctMathangs=chitietMathangRepository.findAll();
 		List<ChitietMathangDTO> chitietMathangDTOs=new ArrayList<ChitietMathangDTO>();
 		for(CtMathang ctmathang:ctMathangs) {
-			if(!ctmathang.getMathang().getTrangthai().equals("1")) chitietMathangDTOs.add(chitietMathangConvert.toDTO(ctmathang));
+			chitietMathangDTOs.add(chitietMathangConvert.toDTO(ctmathang));
 		}
 		return chitietMathangDTOs;
 	}

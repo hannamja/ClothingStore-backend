@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.example.demo.dto.BinhluanDTO;
 import com.example.demo.dto.ChatlieuDTO;
 import com.example.demo.dto.ChitietMathangDTO;
+import com.example.demo.dto.ColorDTO;
 import com.example.demo.dto.CtKhuyenmaiDTO;
 import com.example.demo.dto.DanhgiaDTO;
 import com.example.demo.dto.HinhanhDTO;
@@ -20,6 +21,7 @@ import com.example.demo.dto.KhachhangDTO;
 import com.example.demo.dto.LoaimhDTO;
 import com.example.demo.dto.MathangDTO;
 import com.example.demo.dto.NhanhieuDTO;
+import com.example.demo.dto.SizeDTO;
 import com.example.demo.entity.Binhluan;
 import com.example.demo.entity.Chatlieu;
 import com.example.demo.entity.CtKhuyenmai;
@@ -65,9 +67,14 @@ public class MathangConvert {
 		List<HinhanhDTO> hinhanhDTOs=new ArrayList<HinhanhDTO>();
 		hinhanhDTOs=  hinhanhmh.stream().map(hinhanh->modelMapper.map(hinhanh, HinhanhDTO.class)).collect(Collectors.toList());
 		mathangDTO.setHinhanhDTOs(hinhanhDTOs);
+		
 		List<ChitietMathangDTO> chitietMathangDTOs=new ArrayList<ChitietMathangDTO>();
-		chitietMathangDTOs=ctMathangs.stream().map(ctmathang->modelMapper.map(ctmathang, ChitietMathangDTO.class)).collect(Collectors.toList());
+		for (CtMathang ct : ctMathangs) {
+			chitietMathangDTOs.add(new ChitietMathangDTO(ct.getId(), new ColorDTO(ct.getColor().getMacolor(), ct.getColor().getTencolor()), new SizeDTO(ct.getSize().getMasize(), ct.getSize().getTensize()), ct.getCurrentNumbeer(), null));
+		}
 		mathangDTO.setCtMathangs(chitietMathangDTOs);
+		
+		
 		List<BinhluanDTO> binhluanDTOs= new ArrayList<BinhluanDTO>();
 		for(Binhluan bl : binhluan) {
 			binhluanDTOs.add(binhluanConvert.toDTO(bl));
@@ -79,7 +86,7 @@ public class MathangConvert {
 		}
 		mathangDTO.setDanhgias(danhgiaDTOs);
 		if(ctkm==null) mathangDTO.setChitietKhuyenmaiDTO(null);
-		else mathangDTO.setChitietKhuyenmaiDTO(new CtKhuyenmaiDTO(new CtKhuyenmaiId(ctkm.getId().getMakm(), ctkm.getId().getMamh()),ctkm.getNgaybd(),ctkm.getNgaykt(),ctkm.getMucgiam()));
+		else mathangDTO.setChitietKhuyenmaiDTO(new CtKhuyenmaiDTO(new CtKhuyenmaiId(ctkm.getId().getMakm(), ctkm.getId().getMamh()),ctkm.getMucgiam()));
 		
 		return mathangDTO;
 	}

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.convert.ChitietHoadonConvert;
 import com.example.demo.convert.HoadonConvert;
+import com.example.demo.dto.ApiRes;
 import com.example.demo.dto.ChitietHoadonDTO;
 import com.example.demo.dto.HoadonDTO;
 import com.example.demo.dto.KhachhangDTO;
@@ -22,6 +23,8 @@ import com.example.demo.entity.CtTrangthai;
 import com.example.demo.entity.CtTrangthaiId;
 import com.example.demo.entity.Hoadon;
 import com.example.demo.entity.Trangthaihd;
+import com.example.demo.errcode.ApiErrCode;
+import com.example.demo.errcode.ApiErrCodeEnumMap;
 import com.example.demo.repository.ChitietHoadonRepository;
 import com.example.demo.repository.ChitietMathangRepository;
 import com.example.demo.repository.ChitietTrangThaiRepository;
@@ -37,6 +40,8 @@ public class HoadonServiceImpl implements HoadonService {
 	private ChitietHoadonConvert chitietHoadonConvert;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private ApiErrCodeEnumMap errCode;
 	@Autowired
 	private ChitietTrangThaiRepository chitietTrangThaiRepository;
 	@Autowired 
@@ -94,40 +99,46 @@ public class HoadonServiceImpl implements HoadonService {
 	}
 	
 	@Override
-	public HoadonDTO cancel(HoadonDTO hoadonDTO) {
+	public ApiRes cancel(HoadonDTO hoadonDTO) {
 		// TODO Auto-generated method stub
-		Hoadon hoadon=hoadonConvert.toEnity(hoadonDTO);
-		Set<CtTrangthai> trangthais=hoadon.getCtTrangthais();
-		List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
-		for (CtTrangthai trangthai : trangthais) {
-	        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
-	    }
-		
-		if(hoadonRepository.findById(hoadonDTO.getMahd()).isPresent()) {
-			if(chitietTrangThaiRepository.getCT_TrangThai(hoadonDTO.getMahd()).getTrangthaihd().getMatthd()==6) return new HoadonDTO();
+		try {
+			Hoadon hoadon=hoadonConvert.toEnity(hoadonDTO);
+			Set<CtTrangthai> trangthais=hoadon.getCtTrangthais();
+			List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
+			for (CtTrangthai trangthai : trangthais) {
+		        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
+		    }
+			
+			if(hoadonRepository.findById(hoadonDTO.getMahd()).isPresent()) {
+				if(chitietTrangThaiRepository.getCT_TrangThai(hoadonDTO.getMahd()).getTrangthaihd().getMatthd()==6)
+					return new ApiRes(ApiErrCode.BILL_CANCLED_FAIL.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_CANCLED_FAIL), null);;
+			}
+			for (ChitietHoadonDTO cthd : cthds) {
+				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
+				CtMathang mh = temp.get();
+				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
+				chitietMathangRepository.save(mh);
+			}
+			Hoadon hoadon2=hoadonRepository.save(hoadon);
+			CtTrangthai ctTrangthai=new CtTrangthai();
+			ctTrangthai.setHoadon(hoadon2);
+			Date currentDate = new Date();
+			ctTrangthai.setNgaytao(currentDate);
+			Trangthaihd trangthaihd=new Trangthaihd();
+			trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
+			trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
+			ctTrangthai.setTrangthaihd(trangthaihd);
+			CtTrangthaiId ctTrangthaiId=new CtTrangthaiId();
+			ctTrangthaiId.setMahd(hoadon2.getMahd());
+			ctTrangthaiId.setMatthd(6);
+			ctTrangthai.setId(ctTrangthaiId);
+			chitietTrangThaiRepository.save(ctTrangthai);
+			
+			return new ApiRes(ApiErrCode.BILL_CANCELED_SUCCESS.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_CANCELED_SUCCESS), modelMapper.map(hoadon2,HoadonDTO.class));
 		}
-		for (ChitietHoadonDTO cthd : cthds) {
-			Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
-			CtMathang mh = temp.get();
-			mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
-			chitietMathangRepository.save(mh);
+		catch(Exception e) {
+			return new ApiRes(ApiErrCode.BILL_CANCLED_FAIL.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_CANCLED_FAIL), null);
 		}
-		Hoadon hoadon2=hoadonRepository.save(hoadon);
-		CtTrangthai ctTrangthai=new CtTrangthai();
-		ctTrangthai.setHoadon(hoadon2);
-		Date currentDate = new Date();
-		ctTrangthai.setNgaytao(currentDate);
-		Trangthaihd trangthaihd=new Trangthaihd();
-		trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
-		trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
-		ctTrangthai.setTrangthaihd(trangthaihd);
-		CtTrangthaiId ctTrangthaiId=new CtTrangthaiId();
-		ctTrangthaiId.setMahd(hoadon2.getMahd());
-		ctTrangthaiId.setMatthd(6);
-		ctTrangthai.setId(ctTrangthaiId);
-		chitietTrangThaiRepository.save(ctTrangthai);
-		
-		return modelMapper.map(hoadon2, HoadonDTO.class);
 	}
 	
 	@Override
@@ -182,72 +193,79 @@ public class HoadonServiceImpl implements HoadonService {
 	}
 
 	@Override
-	public HoadonDTO confirm(HoadonDTO hoadonDTO) {
+	public ApiRes confirm(HoadonDTO hoadonDTO) {
 		// TODO Auto-generated method stub
-		Hoadon hoadon=hoadonConvert.toEnity(hoadonDTO);
-		Set<CtTrangthai> trangthais=hoadon.getCtTrangthais();
-		List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
-		for (CtTrangthai trangthai : trangthais) {
-	        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
-	    }
-		for (ChitietHoadonDTO cthd : cthds) {
-			Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
-			CtMathang mh = temp.get();
-			mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
-			chitietMathangRepository.save(mh);
+		try {
+			Hoadon hoadon=hoadonConvert.toEnity(hoadonDTO);
+			Set<CtTrangthai> trangthais=hoadon.getCtTrangthais();
+			List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
+			for (CtTrangthai trangthai : trangthais) {
+		        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
+		    }
+			for (ChitietHoadonDTO cthd : cthds) {
+				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
+				CtMathang mh = temp.get();
+				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
+				chitietMathangRepository.save(mh);
+			}
+			Hoadon hoadon2=hoadonRepository.save(hoadon);
+			CtTrangthai ctTrangthai=new CtTrangthai();
+			ctTrangthai.setHoadon(hoadon2);
+			Date currentDate = new Date();
+			ctTrangthai.setNgaytao(currentDate);
+			Trangthaihd trangthaihd=new Trangthaihd();
+			trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
+			trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
+			ctTrangthai.setTrangthaihd(trangthaihd);
+			CtTrangthaiId ctTrangthaiId=new CtTrangthaiId();
+			ctTrangthaiId.setMahd(hoadon2.getMahd());
+			ctTrangthaiId.setMatthd(3);
+			ctTrangthai.setId(ctTrangthaiId);
+			chitietTrangThaiRepository.save(ctTrangthai);
+			
+			return new ApiRes(ApiErrCode.BILL_CONFIRMED_SUCCESS.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_CONFIRMED_SUCCESS), modelMapper.map(hoadon2,HoadonDTO.class));
 		}
-		Hoadon hoadon2=hoadonRepository.save(hoadon);
-		CtTrangthai ctTrangthai=new CtTrangthai();
-		ctTrangthai.setHoadon(hoadon2);
-		Date currentDate = new Date();
-		ctTrangthai.setNgaytao(currentDate);
-		Trangthaihd trangthaihd=new Trangthaihd();
-		trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
-		trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
-		ctTrangthai.setTrangthaihd(trangthaihd);
-		CtTrangthaiId ctTrangthaiId=new CtTrangthaiId();
-		ctTrangthaiId.setMahd(hoadon2.getMahd());
-		ctTrangthaiId.setMatthd(3);
-		ctTrangthai.setId(ctTrangthaiId);
-		
-		CtTrangthai returnedCtTrangthai =  chitietTrangThaiRepository.save(ctTrangthai);
-		hoadon2.setCtTrangthais(new HashSet<>());
-		hoadon2.getCtTrangthais().add(returnedCtTrangthai);
-		// Nếu dto trả về mà có trạng thái là đã duyệt hàng thành công thì trả về thông báo thành công, ngược lại trả về thông báo lỗi
-		return modelMapper.map(hoadon2, HoadonDTO.class);
+		catch(Exception e) {
+			return new ApiRes(ApiErrCode.BILL_CONFIRMED_FAIL.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_CONFIRMED_FAIL), null);
+		}
 	}
 
 	@Override
-	public HoadonDTO complete(HoadonDTO hoadonDTO) {
+	public ApiRes complete(HoadonDTO hoadonDTO) {
 		// TODO Auto-generated method stub
-		Hoadon hoadon=hoadonConvert.toEnity(hoadonDTO);
-		Set<CtTrangthai> trangthais=hoadon.getCtTrangthais();
-		List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
-		for (CtTrangthai trangthai : trangthais) {
-	        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
-	    }
-		for (ChitietHoadonDTO cthd : cthds) {
-			Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
-			CtMathang mh = temp.get();
-			mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
-			chitietMathangRepository.save(mh);
+		try {
+			Hoadon hoadon=hoadonConvert.toEnity(hoadonDTO);
+			Set<CtTrangthai> trangthais=hoadon.getCtTrangthais();
+			List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
+			for (CtTrangthai trangthai : trangthais) {
+		        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
+		    }
+			for (ChitietHoadonDTO cthd : cthds) {
+				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
+				CtMathang mh = temp.get();
+				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
+				chitietMathangRepository.save(mh);
+			}
+			Hoadon hoadon2=hoadonRepository.save(hoadon);
+			CtTrangthai ctTrangthai=new CtTrangthai();
+			ctTrangthai.setHoadon(hoadon2);
+			Date currentDate = new Date();
+			ctTrangthai.setNgaytao(currentDate);
+			Trangthaihd trangthaihd=new Trangthaihd();
+			trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
+			trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
+			ctTrangthai.setTrangthaihd(trangthaihd);
+			CtTrangthaiId ctTrangthaiId=new CtTrangthaiId();
+			ctTrangthaiId.setMahd(hoadon2.getMahd());
+			ctTrangthaiId.setMatthd(5);
+			ctTrangthai.setId(ctTrangthaiId);
+			chitietTrangThaiRepository.save(ctTrangthai);
+			
+			return new ApiRes(ApiErrCode.BILL_COMPLETED_DELIVERING.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_COMPLETED_DELIVERING), modelMapper.map(hoadon2,HoadonDTO.class));
 		}
-		Hoadon hoadon2=hoadonRepository.save(hoadon);
-		CtTrangthai ctTrangthai=new CtTrangthai();
-		ctTrangthai.setHoadon(hoadon2);
-		Date currentDate = new Date();
-		ctTrangthai.setNgaytao(currentDate);
-		Trangthaihd trangthaihd=new Trangthaihd();
-		trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
-		trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
-		ctTrangthai.setTrangthaihd(trangthaihd);
-		CtTrangthaiId ctTrangthaiId=new CtTrangthaiId();
-		ctTrangthaiId.setMahd(hoadon2.getMahd());
-		ctTrangthaiId.setMatthd(5);
-		ctTrangthai.setId(ctTrangthaiId);
-		chitietTrangThaiRepository.save(ctTrangthai);
-		
-		return modelMapper.map(hoadon2, HoadonDTO.class);
+		catch(Exception e) {
+			return new ApiRes(ApiErrCode.BILL_FAIL_TO_DELIVERY.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_FAIL_TO_DELIVERY), null);
+		}
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.dto.ApiResponse;
 import com.example.demo.entity.AuthRequest;
 import com.example.demo.entity.AuthResponse;
 import com.example.demo.entity.CtQuyen;
@@ -20,6 +21,8 @@ import com.example.demo.entity.Khachhang;
 import com.example.demo.entity.Nhanvien;
 import com.example.demo.entity.Quyen;
 import com.example.demo.entity.Taikhoan;
+import com.example.demo.errcode.ApiErrCode;
+import com.example.demo.errcode.ApiErrCodeEnumMap;
 import com.example.demo.jwt.CustomEncoder;
 import com.example.demo.jwt.JwtUtils;
 import com.example.demo.jwt.MyTaikhoanDetails;
@@ -30,12 +33,18 @@ import com.example.demo.repository.TaiKhoanRepository;
 @RequestMapping("/api")
 public class AuthController {
 	@Autowired
+	ApiErrCodeEnumMap apiErr;
+	@Autowired
 	AuthenticationManager authManager;
 	@Autowired
 	JwtUtils jwtUtil;
 	@Autowired
 	TaiKhoanRepository repo;
-
+	
+	@GetMapping("/apiErrCode")
+	public ResponseEntity<?> apiErrCode() {
+		return ResponseEntity.ok().body(apiErr.getApiErrCode().get(ApiErrCode.SAVE_SUCCESS));
+	}
 	@GetMapping("/insertUser")
 	public ResponseEntity<?> insert() {
 
@@ -47,12 +56,12 @@ public class AuthController {
 
 	@PostMapping("/auth/signin")
 	public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-
 		try {
 			Authentication authentication = authManager
 					.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
 			MyTaikhoanDetails tk = (MyTaikhoanDetails) authentication.getPrincipal();
+
 			String accessToken = jwtUtil.generateAccessToken(tk.tk);
 			AuthResponse response = new AuthResponse(tk.tk.getEmail(), accessToken);
 			response.setMatk(tk.tk.getMatk());

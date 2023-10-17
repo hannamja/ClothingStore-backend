@@ -65,6 +65,10 @@ public class Taikhoan implements java.io.Serializable {
 		this.ctQuyens = ctQuyens;
 	}
 
+	public Taikhoan(String string, String string2, String encode) {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "MATK", unique = true, nullable = false)

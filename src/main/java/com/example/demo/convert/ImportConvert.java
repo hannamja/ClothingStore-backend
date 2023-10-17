@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.ChitietMathangDTO;
+import com.example.demo.dto.ColorDTO;
 import com.example.demo.dto.CtPhieunhapDTO;
 import com.example.demo.dto.CtPhieunhapIdDTO;
 import com.example.demo.dto.ImportDTO;
 import com.example.demo.dto.MathangDTO;
 import com.example.demo.dto.NhanvienDTO;
 import com.example.demo.dto.PhieudatDTO;
+import com.example.demo.dto.SizeDTO;
 import com.example.demo.entity.CtPhieunhap;
 import com.example.demo.entity.Nhanvien;
 import com.example.demo.entity.Phieudat;
@@ -44,7 +46,9 @@ public class ImportConvert {
 			temp.setSoluong(ctpn.getSoluong());
 			temp.setDongia(ctpn.getDongia());
 			temp.setPhieunhapDTO(new ImportDTO(ctpn.getPhieunhap().getMapn()));
-			temp.setCtMathangDTO(new ChitietMathangDTO(ctpn.getCtMathang().getId(),ctpn.getCtMathang().getColor(),ctpn.getCtMathang().getSize(), ctpn.getCtMathang().getCurrentNumbeer(),new MathangDTO(ctpn.getCtMathang().getMathang().getMamh(), ctpn.getCtMathang().getMathang().getTenmh())));
+			ColorDTO colorDTO = new ColorDTO(ctpn.getCtMathang().getColor().getMacolor(), ctpn.getCtMathang().getColor().getTencolor());
+			SizeDTO sizeDTO = new SizeDTO(ctpn.getCtMathang().getSize().getMasize(),ctpn.getCtMathang().getSize().getTensize());
+			temp.setCtMathangDTO(new ChitietMathangDTO(ctpn.getCtMathang().getId(),colorDTO,sizeDTO, ctpn.getCtMathang().getCurrentNumbeer(),new MathangDTO(ctpn.getCtMathang().getMathang().getMamh(), ctpn.getCtMathang().getMathang().getTenmh())));
 			ctphieunhapDTOs.add(temp);
 		}
 		importDTO.setCtPhieunhapDTOs(ctphieunhapDTOs);

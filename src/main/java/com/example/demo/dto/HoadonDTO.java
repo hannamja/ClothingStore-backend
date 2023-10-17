@@ -14,6 +14,7 @@ public class HoadonDTO {
 	private Integer mahd;
 	private KhachhangDTO khachhang;
 	private NhanvienDTO nhanvien;
+	private ShipperDTO shipper;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date ngaytao;
 	private Integer tongtien;
@@ -86,6 +87,14 @@ public class HoadonDTO {
 	}
 	public void setTongtien(Integer tongtien) {
 		this.tongtien = tongtien;
+	}
+
+	public ShipperDTO getShipper() {
+		return shipper;
+	}
+
+	public void setShipper(ShipperDTO shipper) {
+		this.shipper = shipper;
 	}
 	
 	

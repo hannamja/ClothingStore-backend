@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.convert.MathangConvert;
+import com.example.demo.dto.ApiRes;
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.HinhanhDTO;
 import com.example.demo.dto.KhachhangDTO;
@@ -28,6 +29,8 @@ import com.example.demo.entity.GiaId;
 import com.example.demo.entity.Khachhang;
 import com.example.demo.entity.Mathang;
 import com.example.demo.entity.Nhanvien;
+import com.example.demo.errcode.ApiErrCode;
+import com.example.demo.errcode.ApiErrCodeEnumMap;
 import com.example.demo.service.GiaService;
 import com.example.demo.service.MathangService;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -37,6 +40,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 @RestController
 @RequestMapping("/api")
 public class MathangController {
+	@Autowired
+	private ApiErrCodeEnumMap apiErr;
 	@Autowired
 	private MathangService  mathangService;
 	@Autowired
@@ -50,7 +55,6 @@ public class MathangController {
 	@GetMapping("/mathang")
 	public ResponseEntity<List<MathangDTO>> getAllMathang(){
 		List<MathangDTO> mathangDTOs=mathangService.getAllMathang();
-		System.out.print(mathangDTOs.size());
 		if (mathangDTOs.isEmpty()) {
 			return new ResponseEntity<List<MathangDTO>>(HttpStatus.NOT_FOUND);
 		}
@@ -68,7 +72,6 @@ public class MathangController {
 	public ResponseEntity<Object> getMHById(@PathVariable int id){
 		MathangDTO mathangDTO=mathangService.findById(id);
 		if (mathangDTO==null) {
-			System.out.println(mathangDTO);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(HttpStatus.NOT_FOUND.value(), "Mat hang khong ton tai", null));
 		}
 //		return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.value(), "Khach hang id la",
@@ -101,80 +104,22 @@ public class MathangController {
 	}
 	
 	@PostMapping("/mathang")
-	public ResponseEntity<Object> saveMH(@RequestBody MathangDTO mathangDTO)throws IOException, InterruptedException{
-		Double ProductBrand=0D;
-		   Double Material=0D;
-		   Double ProductionWay=0D;
-		   if (mathangDTO.getCachlam().equals("HAND")) {
-			   ProductionWay=1D;
-		   }else {
-			   ProductionWay=0.5D;
-		   }
-		   if (mathangDTO.getChatlieuDTO().getMacl()==1) {
-			   Material=1D;
-		   }else if (mathangDTO.getChatlieuDTO().getMacl()==2) {
-			   Material=(2/3D);
-		   }else {
-			   Material=(1/3D);
-		   }
-		   
-		   if (mathangDTO.getNhanhieuDTO().getManh()==1) {
-			   ProductBrand=1D;
-		   }else if (mathangDTO.getNhanhieuDTO().getManh()==2) {
-			   ProductBrand=0.8D;
-		   }else if (mathangDTO.getNhanhieuDTO().getManh()==3) {
-			   ProductBrand=0.6D;
-		   }else if (mathangDTO.getNhanhieuDTO().getManh()==4) {
-			   ProductBrand=0.4D;
-		   }else {
-			   ProductBrand=0.2D;
-		   }
-		   String label2=  readPython.ReadPython(ProductBrand, Material, ProductionWay);
-		   System.out.print(label2);
-		   String label1="";
-		   if (label2.equals("0")) {
-			label1="BINH DAN";
-		   }else if (label2.equals("1")) {
-			   label1="TAM TRUNG";
-		   }else {
-			label1="CAO CAP";
-		   }
+	public ApiRes saveMH(@RequestBody MathangDTO mathangDTO)throws IOException, InterruptedException{
 		Date currentDate = new Date();
-
-        // Đặt ngày cụ thể cho currentDate
-        int year = 2023;
-        int month = 9; // Tháng (0-11, 0 là tháng 1)
-        int day = 27;
-        currentDate.setYear(year - 1900);
-        currentDate.setMonth(month - 1);
-        currentDate.setDate(day);
-        mathangDTO.setPhanloai(label1);
-		MathangDTO mathangDTO2= mathangService.save(mathangDTO,1,currentDate);
 		List<HinhanhDTO> hinhanhDTOs=mathangDTO.getHinhanhDTOs();
-		
-		return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(), "Mat hang created successfully",
-                mathangDTO2));
+		return mathangService.save(mathangDTO,1,currentDate);
 	}
 	@PutMapping("/mathang/{id}")
-	public ResponseEntity<Object> updateMH(@RequestBody MathangDTO mathangDTO,@PathVariable int id){
+	public ApiRes updateMH(@RequestBody MathangDTO mathangDTO,@PathVariable int id){
 		 MathangDTO mathangDTO2=mathangService.findById(id);
 		 if (mathangDTO2==null) {
-			 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(HttpStatus.NOT_FOUND.value(), "Mat hang khong ton tai", null));
+			 return new ApiRes(ApiErrCode.CONNECT_ERROR.toString(), apiErr.getApiErrCode().get(ApiErrCode.CONNECT_ERROR),null);
 		}
 		mathangDTO.setMamh(id);
 		Date currentDate = new Date();
-
-        // Đặt ngày cụ thể cho currentDate
-        int year = 2023;
-        int month = 9; // Tháng (0-11, 0 là tháng 1)
-        int day = 29;
-        currentDate.setYear(year - 1900);
-        currentDate.setMonth(month - 1);
-        currentDate.setDate(day);
-
-		MathangDTO mathangDTO3=mathangService.save(mathangDTO,1,currentDate);
-		return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.value(), "Mat hang updated successfully ", mathangDTO3));
+		return mathangService.save(mathangDTO,1,currentDate);
 	}
+	
 	@DeleteMapping("/mathang/{id}")
 	public ResponseEntity<Object> delete(@PathVariable int id){
 		MathangDTO mathangDTO2=mathangService.findById(id);

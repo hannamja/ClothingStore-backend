@@ -3,8 +3,6 @@ package com.example.demo.config;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,7 +48,7 @@ public class ApplicationSecurity {
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		http.authorizeRequests().antMatchers("/api/mathang/**","/api/auth/signin", "/api/insertUser","/api/phieunhap","/api/phieudat","/api/khachhang-signup/**").permitAll().anyRequest().authenticated();
+		http.authorizeRequests().antMatchers("/api/mathang/**","/api/auth/signin","/api/color","/api/hoadon","/api/size", "/api/apiErrCode", "/api/insertUser","/api/phieunhap","/api/phieudat","/api/khachhang-signup/**").permitAll().anyRequest().authenticated();
 
 		http.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());

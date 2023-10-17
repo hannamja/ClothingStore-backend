@@ -27,8 +27,6 @@ public class Khuyenmaiconvert {
 		for(CtKhuyenmai ct : list) {
 			CtKhuyenmaiDTO temp = new CtKhuyenmaiDTO();
 			temp.setId(new CtKhuyenmaiId(ct.getId().getMakm(), ct.getId().getMamh()));
-			temp.setNgaybd(ct.getNgaybd());
-			temp.setNgaykt(ct.getNgaykt());
 			temp.setMucgiam(ct.getMucgiam());
 			ctkms.add(temp);
 		}
