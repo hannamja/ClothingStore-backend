@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -113,9 +114,10 @@ public class MathangController {
 	
 	@PostMapping("/mathang")
 	public ApiRes saveMH(@RequestBody MathangDTO mathangDTO)throws IOException, InterruptedException{
-		Date currentDate = new Date();
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 7);
 		List<HinhanhDTO> hinhanhDTOs=mathangDTO.getHinhanhDTOs();
-		return mathangService.save(mathangDTO,1,currentDate);
+		return mathangService.save(mathangDTO,1,c.getTime());
 	}
 	@PutMapping("/mathang/{id}")
 	public ApiRes updateMH(@RequestBody MathangDTO mathangDTO,@PathVariable int id){
