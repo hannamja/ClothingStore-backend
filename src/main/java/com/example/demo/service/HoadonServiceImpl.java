@@ -64,6 +64,9 @@ public class HoadonServiceImpl implements HoadonService {
 		for (ChitietHoadonDTO cthd : cthds) {
 			Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
 			CtMathang mh = temp.get();
+			if(Integer.parseInt(mh.getCurrentNumbeer())-cthd.getSoluong()<0) {
+				return modelMapper.map(new Hoadon(), HoadonDTO.class);
+			}
 			mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())-cthd.getSoluong()));
 			chitietMathangRepository.save(mh);
 		}
