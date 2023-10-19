@@ -23,6 +23,10 @@ public class ChitietMathangConvert {
 		mathangDTO.setMamh(ctMathang.getMathang().getMamh());
 		mathangDTO.setTenmh(ctMathang.getMathang().getTenmh());
 		chitietMathangDTO.setMathangDTO(mathangDTO);
+		
+		if(ctMathang.getId() != null) {
+			chitietMathangDTO.setId(ctMathang.getId());
+		}
 		return chitietMathangDTO;
 	}
 	public CtMathang toEntity(ChitietMathangDTO chitietMathangDTO) {
@@ -38,6 +42,10 @@ public class ChitietMathangConvert {
 		mathang.setMamh(chitietMathangDTO.getMathangDTO().getMamh());
 		mathang.setTenmh(chitietMathangDTO.getMathangDTO().getTenmh());
 		ctMathang.setMathang(mathang);
+		
+		if(chitietMathangDTO.getId() != null) {
+			ctMathang.setId(chitietMathangDTO.getId());
+		}
 		return ctMathang;
 	}
 }

@@ -260,19 +260,22 @@ public class MathangServiceImpl implements MathangService {
 				ctmhDTO.setSizeDTO(temp3);
 				ctmhDTO.setColorDTO(temp2);
 				ctmhDTO.setCurrentNumbeer(mhDTO.getCurrentNumbeer());
+				ctmhDTO.setId(mhDTO.getId());
 				mhs.add(chitietMathangConvert.toEntity(ctmhDTO));
 			}
 			if (chitietMathangService.getCtMathang(mathangDTO.getMamh()) != null) {
 				List<CtMathang> ctMathangs = chitietMathangRepository.getCTMathang(mathangDTO.getMamh());
-				chitietMathangRepository.deleteAll(ctMathangs);
+				for (CtMathang ctMathang : ctMathangs) {
+					try {
+						chitietMathangRepository.delete(ctMathang);
+					}
+					catch(Exception e) {
+						
+					}
+				}
 			}
 			
 			List<CtMathang> l = chitietMathangRepository.saveAll(mhs);
-			for (CtMathang ct : l) {
-				System.out.print(ct.getSize().getMasize());
-				System.out.print(ct.getColor().getMacolor());
-				System.out.print(ct.getCurrentNumbeer());
-			}
 			return new ApiRes(ApiErrCode.SAVE_SUCCESS.toString(),apiErr.getApiErrCode().get(ApiErrCode.SAVE_SUCCESS), modelMapper.map(mathang2, MathangDTO.class));
 		}
 		catch(Exception e ) {
