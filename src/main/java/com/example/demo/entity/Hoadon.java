@@ -29,6 +29,7 @@ public class Hoadon implements java.io.Serializable {
 	private Nhanvien nhanvien;
 	private Date ngaytao;
 	private Integer tongtien;
+	private String diachi;
 	private Shipper shipper;
 	private Set<CtTrangthai> ctTrangthais = new HashSet<CtTrangthai>(0);
 	private Set<CtHoadon> ctHoadons = new HashSet<CtHoadon>(0);
@@ -107,8 +108,6 @@ public class Hoadon implements java.io.Serializable {
 		this.shipper = shipper;
 	}
 
-
-
 	@Column(name = "TONGTIEN")
 	public Integer getTongtien() {
 		return this.tongtien;
@@ -117,6 +116,19 @@ public class Hoadon implements java.io.Serializable {
 	public void setTongtien(Integer tongtien) {
 		this.tongtien = tongtien;
 	}
+
+	@Column(name = "DIACHI")
+	public String getDiachi() {
+		return diachi;
+	}
+
+
+
+	public void setDiachi(String diachi) {
+		this.diachi = diachi;
+	}
+
+
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hoadon")
 	public Set<CtTrangthai> getCtTrangthais() {

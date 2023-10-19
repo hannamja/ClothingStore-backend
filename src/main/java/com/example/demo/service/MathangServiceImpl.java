@@ -104,6 +104,32 @@ public class MathangServiceImpl implements MathangService {
 	}
 
 	@Override
+	public List<MathangDTO> getAllMathangAd() {
+		// TODO Auto-generated method stub
+		List<Mathang> list = mathangRepository.findAll();
+		List<MathangDTO> mathangDTOs = new ArrayList<MathangDTO>();
+		for (Mathang mh : list) {
+			List<CtKhuyenmai> temp = ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh());
+			Gia gia = giaRepository.getBanggiaLast(mh.getMamh());
+			if (mh.getTrangthai().equals("0"))
+				if (temp.size() == 0)
+					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
+							hinhanhRepository.getHAByMH(mh.getMamh()),
+							chitietMathangRepository.getCTMathang(mh.getMamh()),
+							binhluanRepository.getBinhluan(mh.getMamh()), danhgiaRepository.getDanhgia(mh.getMamh()),
+							null));
+				else
+					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
+							hinhanhRepository.getHAByMH(mh.getMamh()),
+							chitietMathangRepository.getCTMathang(mh.getMamh()),
+							binhluanRepository.getBinhluan(mh.getMamh()), danhgiaRepository.getDanhgia(mh.getMamh()),
+							ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh()).get(0)));
+		}
+		return mathangDTOs;
+	}
+
+	
+	@Override
 	public List<MathangDTO> getAllMathangByLoai(Integer id) {
 		// TODO Auto-generated method stub
 		List<Mathang> list = mathangRepository.getMathangByLoai(id);

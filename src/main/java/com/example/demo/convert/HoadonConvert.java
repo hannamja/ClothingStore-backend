@@ -52,6 +52,8 @@ public class HoadonConvert {
 		khachhangDTO.setEmail(hoadon.getKhachhang().getEmail());
 		hoadonDTO.setKhachhang(khachhangDTO);
 		
+		hoadonDTO.setDiachi(hoadon.getDiachi());
+		
 		if(hoadon.getNhanvien() != null && hoadon.getShipper()!=null) {
 			NhanvienDTO nv = new NhanvienDTO();
 			nv.setManv(hoadon.getNhanvien().getManv());
@@ -118,6 +120,8 @@ public class HoadonConvert {
 		Khachhang khachhang=new Khachhang();
 		khachhang.setMakh(hoadonDTO.getKhachhang().getMakh());
 		hoadon.setKhachhang(khachhang);
+		
+		hoadon.setDiachi(hoadonDTO.getDiachi());
 		
 		if(hoadonDTO.getNhanvien() != null && hoadonDTO.getShipper()!=null) {
 			Nhanvien nv = new Nhanvien();

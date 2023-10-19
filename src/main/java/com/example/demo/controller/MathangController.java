@@ -60,6 +60,14 @@ public class MathangController {
 		}
 		return new ResponseEntity<List<MathangDTO>>(mathangDTOs,HttpStatus.OK);
 	}
+	@GetMapping("/mathangAd")
+	public ResponseEntity<List<MathangDTO>> getAllMathangAd(){
+		List<MathangDTO> mathangDTOs=mathangService.getAllMathangAd();
+		if (mathangDTOs.isEmpty()) {
+			return new ResponseEntity<List<MathangDTO>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<MathangDTO>>(mathangDTOs,HttpStatus.OK);
+	}
 	@GetMapping("/mathang/getByLoai/{id}")
 	public ResponseEntity<List<MathangDTO>> getAllMathangByLoai(@PathVariable int id){
 		List<MathangDTO> mathangDTOs=mathangService.getAllMathangByLoai(id);

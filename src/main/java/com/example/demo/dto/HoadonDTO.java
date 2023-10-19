@@ -18,20 +18,28 @@ public class HoadonDTO {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date ngaytao;
 	private Integer tongtien;
+	private String diachi;
 	private ChitietTrangThaiDTO chitietTrangThaiDTO;
 	private List<ChitietHoadonDTO> chitietHoadonDTO;
 	
-	public HoadonDTO(Integer mahd, KhachhangDTO khachhang, NhanvienDTO nhanvien, Date ngaytao, Integer tongtien,
-			ChitietTrangThaiDTO chitietTrangThaiDTO, List<ChitietHoadonDTO> chitietHoadonDTO) {
+	
+
+	public HoadonDTO(Integer mahd, KhachhangDTO khachhang, NhanvienDTO nhanvien, ShipperDTO shipper, Date ngaytao,
+			Integer tongtien, String diachi, ChitietTrangThaiDTO chitietTrangThaiDTO,
+			List<ChitietHoadonDTO> chitietHoadonDTO) {
 		super();
 		this.mahd = mahd;
 		this.khachhang = khachhang;
 		this.nhanvien = nhanvien;
+		this.shipper = shipper;
 		this.ngaytao = ngaytao;
 		this.tongtien = tongtien;
+		this.diachi = diachi;
 		this.chitietTrangThaiDTO = chitietTrangThaiDTO;
 		this.chitietHoadonDTO = chitietHoadonDTO;
 	}
+
+
 
 	public HoadonDTO() {
 		super();
@@ -95,6 +103,14 @@ public class HoadonDTO {
 
 	public void setShipper(ShipperDTO shipper) {
 		this.shipper = shipper;
+	}
+
+	public String getDiachi() {
+		return diachi;
+	}
+
+	public void setDiachi(String diachi) {
+		this.diachi = diachi;
 	}
 	
 	

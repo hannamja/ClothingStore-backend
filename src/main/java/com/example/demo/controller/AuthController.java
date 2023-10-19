@@ -81,6 +81,7 @@ public class AuthController {
 			else {
 				Khachhang kh = new Khachhang();
 				kh.setMakh(tk.tk.getKhachhang().getMakh());
+				kh.setDiachi(tk.tk.getKhachhang().getDiachi());
 				response.setKhachhang(kh);
 			}
 			for (CtQuyen ctq : tk.tk.getCtQuyens()) {

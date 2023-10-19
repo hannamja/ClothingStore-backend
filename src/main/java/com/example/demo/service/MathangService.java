@@ -12,6 +12,7 @@ import com.example.demo.entity.Mathang;
 
 public interface MathangService {
 	List<MathangDTO> getAllMathang();
+	List<MathangDTO> getAllMathangAd();
 	MathangDTO findById(Integer id);
 	ApiRes save(MathangDTO mathangDTO,Integer id,Date date);
 	List<MathangDTO> getAllMathangByLoai(Integer id);
