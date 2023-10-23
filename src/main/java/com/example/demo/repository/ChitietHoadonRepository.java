@@ -12,6 +12,6 @@ import com.example.demo.entity.CtTrangthai;
 public interface ChitietHoadonRepository extends JpaRepository<CtHoadon, Integer>{
 	@Query(value = "CALL getCT_Hoadon(:MAHD);", nativeQuery = true)
     public List<CtHoadon> getCT_Hoadon(@Param("MAHD") Integer mahd);
-	@Query(value = "CALL checkMH_HD(:MAMH);", nativeQuery = true)
-    public List<CtHoadon> checkHD_MH(@Param("MAMH") Integer mamh);
+//	@Query(value = "CALL checkMH_HD(:MAMH);", nativeQuery = true)
+//    public List<CtHoadon> checkHD_MH(@Param("MAMH") Integer mamh);
 }

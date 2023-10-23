@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.convert.MathangConvert;
@@ -103,6 +104,18 @@ public class MathangController {
 	@GetMapping("/mathang/nhanhieu/{id}")
 	public ResponseEntity<Object> getMHByNh(@PathVariable int id){
 		MathangDTO mathangDTO=mathangService.findById(id);
+		if (mathangDTO==null) {
+			System.out.println(mathangDTO);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(HttpStatus.NOT_FOUND.value(), "Mat hang khong ton tai", null));
+		}
+//		return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.value(), "Khach hang id la",
+//                mathangDTO));
+		return new ResponseEntity<>(mathangDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping("/mathang/search")
+	public ResponseEntity<Object> getAllMathangByName(@RequestParam String name){
+		List<MathangDTO> mathangDTO=mathangService.getAllMathangByName("%"+name+"%");
 		if (mathangDTO==null) {
 			System.out.println(mathangDTO);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(HttpStatus.NOT_FOUND.value(), "Mat hang khong ton tai", null));
