@@ -71,7 +71,7 @@ public class HoadonController {
 	}
 	
 	@PostMapping("/hoadon/processing")
-	public HoadonDTO processingHoadon(@RequestBody HoadonDTO hoadonDTO) {
+	public ApiRes processingHoadon(@RequestBody HoadonDTO hoadonDTO) {
 		return hoadonService.processing(hoadonDTO);
 	}
 	

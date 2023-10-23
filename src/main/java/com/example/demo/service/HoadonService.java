@@ -11,7 +11,7 @@ public interface HoadonService {
 	ApiRes cancel(HoadonDTO hoadonDTO);
 	ApiRes confirm(HoadonDTO hoadonDTO);
 	ApiRes complete(HoadonDTO hoadonDTO);
-	HoadonDTO processing(HoadonDTO hoadonDTO);
+	ApiRes processing(HoadonDTO hoadonDTO);
 	HoadonDTO updateTT(HoadonDTO hoadonDTO);
 	HoadonDTO findById (Integer id);
 	List<HoadonDTO> getAllHoadon();

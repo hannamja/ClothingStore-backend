@@ -17,6 +17,5 @@ public interface MathangService {
 	ApiRes save(MathangDTO mathangDTO,Integer id,Date date);
 	List<MathangDTO> getAllMathangByLoai(Integer id);
 	List<MathangDTO> getAllMathangByNh(Integer id);
-	List<MathangDTO> getAllMathangByName(String name);
 	ApiResponse delete(Integer id);
 }
