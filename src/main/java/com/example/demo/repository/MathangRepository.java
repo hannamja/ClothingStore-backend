@@ -16,4 +16,6 @@ public interface MathangRepository extends JpaRepository<Mathang, Integer> {
     public List<Mathang> getMathangByLoai(@Param("MALOAI") Integer maloai);
 	@Query(value = "CALL getMathangByCl(:MACL);", nativeQuery = true)
     public List<Mathang> getMathangByCl(@Param("MACL") Integer macl);
+	@Query(value = "CALL getMathangByName(:NAME);", nativeQuery = true)
+    public List<Mathang> getMathangByName(@Param("NAME") String name);
 }

@@ -304,4 +304,29 @@ public class MathangServiceImpl implements MathangService {
 		}
 	}
 
+	@Override
+	public List<MathangDTO> getAllMathangByName(String name) {
+		// TODO Auto-generated method stub
+		List<Mathang> list = mathangRepository.getMathangByName(name);
+		List<MathangDTO> mathangDTOs = new ArrayList<MathangDTO>();
+		for (Mathang mh : list) {
+			List<CtKhuyenmai> temp = ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh());
+			Gia gia = giaRepository.getBanggiaLast(mh.getMamh());
+			if (mh.getTrangthai().equals("0") && gia !=null)
+				if (temp.size() == 0)
+					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
+							hinhanhRepository.getHAByMH(mh.getMamh()),
+							chitietMathangRepository.getCTMathang(mh.getMamh()),
+							binhluanRepository.getBinhluan(mh.getMamh()), danhgiaRepository.getDanhgia(mh.getMamh()),
+							null));
+				else
+					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
+							hinhanhRepository.getHAByMH(mh.getMamh()),
+							chitietMathangRepository.getCTMathang(mh.getMamh()),
+							binhluanRepository.getBinhluan(mh.getMamh()), danhgiaRepository.getDanhgia(mh.getMamh()),
+							ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh()).get(0)));
+		}
+		return mathangDTOs;
+	}
+
 }
