@@ -4,7 +4,9 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -27,6 +29,7 @@ import com.example.demo.jwt.CustomEncoder;
 import com.example.demo.jwt.JwtUtils;
 import com.example.demo.jwt.MyTaikhoanDetails;
 import com.example.demo.repository.TaiKhoanRepository;
+import com.example.demo.service.EmailSenderService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -40,6 +43,10 @@ public class AuthController {
 	JwtUtils jwtUtil;
 	@Autowired
 	TaiKhoanRepository repo;
+
+	@Autowired EmailSenderService senderService;
+
+  private static Map<String, String> forgotPasswordMap = new HashMap<>();
 	
 	@GetMapping("/apiErrCode")
 	public ResponseEntity<?> apiErrCode() {
@@ -98,4 +105,50 @@ public class AuthController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
+	 @GetMapping("/auth/check-email-exist")
+  public ResponseEntity<Integer> checkEmail(
+      @RequestParam("email") String email, @RequestParam("isCreateOTP") Boolean isCreateOTP) {
+    Taikhoan tk = repo.findByEmail(email);
+    if (tk != null) {
+      if (tk.getMatk() != null) {
+        if (isCreateOTP) {
+          double otpNumber = Math.random() * 100000;
+          String otp = String.valueOf((int) otpNumber);
+          AuthController.forgotPasswordMap.put(email, otp);
+          senderService.sendEmail(
+              email,
+              "Mã OTP quên mật khẩu",
+              "OTP để thay đổi mật khẩu mới cho tài khoản " + tk.getEmail() + " là: " + otp);
+        } 
+          return ResponseEntity.ok(tk.getMatk());
+
+      }
+    }
+    return ResponseEntity.ok(0);
+  }
+
+	@GetMapping("/auth/check-email-and-otp")
+  public ResponseEntity<Boolean> checkEmailAndOTP(
+      @RequestParam("email") String email, @RequestParam("otp") String otp) {
+    if (AuthController.forgotPasswordMap.containsKey(email)) {
+      String otpInMap = AuthController.forgotPasswordMap.get(email);
+      if (otpInMap.equals(otp)) {
+        return ResponseEntity.ok(true);
+      }
+    }
+    return ResponseEntity.ok(false);
+  }
+
+	@PostMapping("/auth/change-password-no-old-password")
+  public ResponseEntity<Map<String, String>> changePasswordNoOldPassword(
+      @RequestParam Integer accountId, @RequestParam String newPassword) {
+    Map<String, String> returnedMap = new HashMap<>();
+
+    Taikhoan tk = repo.findById(accountId).get();
+    if (tk != null) {
+      tk.setMatkhau(newPassword);
+      repo.save(tk);
+    } else returnedMap.put("error", "Id tài khoản không tồn tại");
+    return ResponseEntity.ok(returnedMap);
+  }
 }

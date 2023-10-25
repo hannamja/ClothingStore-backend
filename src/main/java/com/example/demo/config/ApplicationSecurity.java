@@ -47,8 +47,8 @@ public class ApplicationSecurity {
 		http.cors();
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-		http.authorizeRequests().antMatchers("/api/loaimh/**","/api/mathang/**","/api/auth/signin","/api/color","/api/hoadon","/api/size", "/api/apiErrCode", "/api/insertUser","/api/phieunhap","/api/phieudat","/api/khachhang-signup/**").permitAll().anyRequest().authenticated();
+http.authorizeRequests()
+		.antMatchers("/api/auth/change-password-no-old-password","/api/auth/check-email-exist","/api/auth/check-email-and-otp" ,"/api/loaimh/**","/api/mathang/**","/api/auth/signin","/api/color","/api/hoadon","/api/size", "/api/apiErrCode", "/api/insertUser","/api/phieunhap","/api/phieudat","/api/khachhang-signup/**").permitAll().anyRequest().authenticated();
 
 		http.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
