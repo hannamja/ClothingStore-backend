@@ -21,6 +21,8 @@ public class Khuyenmaiconvert {
 		KhuyenmaiDTO kmDTO = new KhuyenmaiDTO();
 		kmDTO.setMakm(km.getMakm());
 		kmDTO.setLydo(km.getLydo());
+		kmDTO.setNgaybd(km.getNgaybd());
+		kmDTO.setNgaykt(km.getNgaykt());
 		kmDTO.setNhanvien(new NhanvienDTO(km.getNhanvien().getManv(), km.getNhanvien().getTennv()));
 		
 		List<CtKhuyenmaiDTO> ctkms = new ArrayList<CtKhuyenmaiDTO>();
@@ -38,6 +40,8 @@ public class Khuyenmaiconvert {
 		Khuyenmai km = new Khuyenmai();
 		km.setMakm(kmDTO.getMakm());
 		km.setLydo(kmDTO.getLydo());
+		km.setNgaybd(kmDTO.getNgaybd());
+		km.setNgaykt(kmDTO.getNgaykt());
 		km.setNhanvien(new Nhanvien(kmDTO.getNhanvien().getManv()));
 		return km;
 	}
