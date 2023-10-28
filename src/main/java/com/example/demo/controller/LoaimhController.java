@@ -47,9 +47,14 @@ public class LoaimhController {
 	}
 	@PostMapping("/loaimh")
 	public ResponseEntity<Object> saveLoaimh(@RequestBody LoaimhDTO loaimhDTO){
-		Loaimh loaimh=modelMapper.map(loaimhDTO, Loaimh.class);
-		LoaimhDTO loaimhDTO2=loaimhService.save(loaimh);
-		return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(),"Mat hang them thanh cong",loaimhDTO2));
+		try {
+			Loaimh loaimh=modelMapper.map(loaimhDTO, Loaimh.class);
+			LoaimhDTO loaimhDTO2=loaimhService.save(loaimh);
+			return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(),"Mat hang them thanh cong",loaimhDTO2));
+		}
+		catch(Exception e) {
+			return ResponseEntity.ok(new ApiResponse(404,"",new LoaimhDTO()));
+		}
 	}
 	@PutMapping("/loaimh/{id}")
 	public ResponseEntity<Object> updateLoaimh(@RequestBody LoaimhDTO loaimhDTO,@PathVariable int id){

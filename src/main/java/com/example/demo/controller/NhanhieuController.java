@@ -41,7 +41,12 @@ public class NhanhieuController {
 	}
 	@PostMapping("/nhanhieu")
 	public NhanhieuDTO save(@RequestBody NhanhieuDTO nhanhieuDTO) {
-		return nhanhieuService.save(modelMapper.map(nhanhieuDTO, Nhanhieu.class));
+		try {
+			return nhanhieuService.save(modelMapper.map(nhanhieuDTO, Nhanhieu.class));
+		}
+		catch(Exception e) {
+			return new NhanhieuDTO();
+		}
 	}
 	@GetMapping("/nhanhieu/{id}")
 	public ResponseEntity<Object> getById(@PathVariable int id) {

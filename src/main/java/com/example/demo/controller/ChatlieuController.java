@@ -41,7 +41,12 @@ public class ChatlieuController {
 	}
 	@PostMapping("/chatlieu")
 	public ChatlieuDTO save(@RequestBody ChatlieuDTO chatlieuDTO) {
-		return chatlieuService.save(modelMapper.map(chatlieuDTO, Chatlieu.class));
+		try {
+			return chatlieuService.save(modelMapper.map(chatlieuDTO, Chatlieu.class));
+		}
+		catch(Exception e) {
+			return new ChatlieuDTO();
+		}
 	}
 	@GetMapping("/chatlieu/{id}")
 	public ResponseEntity<Object> getById(@PathVariable int id) {
