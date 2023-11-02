@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.demo.repository.NhacungcapRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,8 @@ public class NhacungcapController {
 	@Autowired
 	private NhacungcapService nhaccservice;
 	@Autowired
+	private NhacungcapRepository nhacungcapRepository;
+	@Autowired
 	private ModelMapper modelmapper;
 	@GetMapping("/nhacungcap")
 	public ResponseEntity<List<NhacungcapDTO>> getAllNhaCC(){
@@ -57,12 +60,21 @@ public class NhacungcapController {
 //		return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(), "nha cung cap them thanh cong", nhacungcap));
 //	}
 	@PostMapping("/nhacungcap")
-	public ResponseEntity<Object> saveNhaCC(@RequestBody NhacungcapDTO nhacungcapDTO){
-		Nhacungcap nhacungcap=modelmapper.map(nhacungcapDTO, Nhacungcap.class);
-		NhacungcapDTO nhacungcapDTO2=nhaccservice.save(nhacungcap);
-		return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(), "Nha cung cap created successfully",
-                nhacungcapDTO2));
-	}
+	public ResponseEntity<Object> saveNhaCC(@RequestBody NhacungcapDTO nhacungcapDTO) {
+		try {
+	if(!nhacungcapRepository.getNccByEmail(nhacungcapDTO.getEmail()).isEmpty())
+		return ResponseEntity.ok(new ApiResponse(402, "Email nhà cung cấp đã tồn tại",null));
+	if(!nhacungcapRepository.getNccBySdt(nhacungcapDTO.getSodt()).isEmpty())
+		return ResponseEntity.ok(new ApiResponse(403, "Số điện thoại nhà cung cấp đã tồn tại",null));
+	Nhacungcap nhacungcap = modelmapper.map(nhacungcapDTO, Nhacungcap.class);
+	NhacungcapDTO nhacungcapDTO2 = nhaccservice.save(nhacungcap);
+	return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(), "Nha cung cap created successfully",
+					nhacungcapDTO2));
+		}
+		catch (Exception e) {
+			return ResponseEntity.ok(new ApiResponse(404, "Tên nhà cung cấp đã tồn tại",null));
+		}
+    }
 	@PostMapping("/nhacungcaps")
 	public ResponseEntity<Object> saveNhaCCList(@RequestBody List<NhacungcapDTO> nhacungcapDTOs){
 		List<Nhacungcap> nhacungcaps=nhacungcapDTOs.stream().map(nhacungcap->modelmapper.map(nhacungcap, Nhacungcap.class)).collect(Collectors.toList());
@@ -87,7 +99,6 @@ public class NhacungcapController {
 		if (nhacungcap==null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(HttpStatus.NOT_FOUND.value(),"Nha cung cap khong ton tai",null));
 		}
-		nhaccservice.delete(id);
-		return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.value(), "Nha cung cap delete successfully ", null));
+		return ResponseEntity.ok(nhaccservice.delete(id));
 	}
 }

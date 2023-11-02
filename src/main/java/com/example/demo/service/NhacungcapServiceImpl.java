@@ -44,21 +44,19 @@ public class NhacungcapServiceImpl implements NhacungcapService {
 	public ApiResponse delete(Integer id) {
 		// TODO Auto-generated method stub
 		Optional<Nhacungcap> n = nhaccRepository.findById(id);
-		if(!n.isPresent()) {
+		if (!n.isPresent()) {
 			return new ApiResponse(404, "Id không hợp lệ", null);
 		}
 		List<Phieudat> list = phieudatRepository.getPdByNcc(id);
-		if(list.size()==0) {
+		if (list.size() == 0) {
 			nhaccRepository.deleteById(id);
 			return new ApiResponse(200, "Thành công", null);
 		}
 		return new ApiResponse(404, "Nhà cung cấp đã có phiếu đặt!", null);
-		
 	}
 	@Override
 	public List<NhacungcapDTO> saveNhancungcaps(List<Nhacungcap> nhacungcaps) {
 		// TODO Auto-generated method stub
-		
 		return nhaccRepository.saveAll(nhacungcaps).stream().map(nhacungcaps1->modelMapper.map(nhacungcaps1, NhacungcapDTO.class)).collect(Collectors.toList());
 	}
 

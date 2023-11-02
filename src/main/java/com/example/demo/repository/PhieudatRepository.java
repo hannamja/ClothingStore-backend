@@ -10,6 +10,6 @@ import com.example.demo.entity.Nhacungcap;
 import com.example.demo.entity.Phieudat;
 
 public interface PhieudatRepository extends JpaRepository<Phieudat, Integer> {
-	@Query(value = "CALL getMathangByCl(:MANCC);", nativeQuery = true)
+	@Query(value = "CALL getPdByNcc(:MANCC);", nativeQuery = true)
     public List<Phieudat> getPdByNcc(@Param("MANCC") Integer mancc);
 }
