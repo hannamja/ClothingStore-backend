@@ -86,17 +86,21 @@ public class HoadonConvert {
 			ChitietHoadonDTO chitietHoadonDTO2=new ChitietHoadonDTO();
 			chitietHoadonDTO2.setGia(ctHoadon2.getGia());
 			chitietHoadonDTO2.setSoluong(ctHoadon2.getSoluong());
+
 			HoadonDTO hoadonDTO2=new HoadonDTO();
 			hoadonDTO2.setMahd(ctHoadon2.getHoadon().getMahd());
 			chitietHoadonDTO2.setHoadonDTO(hoadonDTO2);
+
 			ChitietMathangDTO chitietMathangDTO2=new ChitietMathangDTO();
 			chitietMathangDTO2.setColorDTO(new ColorDTO(ctHoadon2.getCtMathang().getColor().getMacolor(),ctHoadon2.getCtMathang().getColor().getTencolor()));
 			chitietMathangDTO2.setCurrentNumbeer(ctHoadon2.getCtMathang().getCurrentNumbeer());
 			chitietMathangDTO2.setSizeDTO(new SizeDTO(ctHoadon2.getCtMathang().getSize().getMasize(), ctHoadon2.getCtMathang().getSize().getTensize()));
 			chitietMathangDTO2.setId(ctHoadon2.getCtMathang().getId());
+
 			MathangDTO mathangDTO2=new MathangDTO();
 			mathangDTO2.setMamh(ctHoadon2.getCtMathang().getMathang().getMamh());
 			mathangDTO2.setTenmh(ctHoadon2.getCtMathang().getMathang().getTenmh());
+			mathangDTO2.setTrangthai(ctHoadon2.getCtMathang().getMathang().getTrangthai());
 			
 			List<HinhanhDTO> hinhanhDTOs = new ArrayList<HinhanhDTO>();
 			for (Hinhanhmh ha : ctHoadon2.getCtMathang().getMathang().getHinhanhmhs()) {
