@@ -111,7 +111,7 @@ public class MathangServiceImpl implements MathangService {
 		for (Mathang mh : list) {
 			List<CtKhuyenmai> temp = ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh());
 			Gia gia = giaRepository.getBanggiaLast(mh.getMamh());
-			if (mh.getTrangthai().equals("0") && gia !=null && chitietMathangRepository.getCTMathang(mh.getMamh()).size() != 0)
+				if (temp.size() == 0)
 					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
 							hinhanhRepository.getHAByMH(mh.getMamh()),
 							chitietMathangRepository.getCTMathang(mh.getMamh()),
@@ -312,7 +312,7 @@ public class MathangServiceImpl implements MathangService {
 		for (Mathang mh : list) {
 			List<CtKhuyenmai> temp = ctKhuyenmaiRepository.getKhuyenmai(mh.getMamh());
 			Gia gia = giaRepository.getBanggiaLast(mh.getMamh());
-			if (mh.getTrangthai().equals("0") && gia !=null)
+			if (mh.getTrangthai().equals("0") && gia !=null && chitietMathangRepository.getCTMathang(mh.getMamh()).size() != 0)
 				if (temp.size() == 0)
 					mathangDTOs.add(mathangConvert.toDTO(mh, gia,
 							hinhanhRepository.getHAByMH(mh.getMamh()),
