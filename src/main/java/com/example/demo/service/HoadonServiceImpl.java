@@ -301,10 +301,10 @@ public class HoadonServiceImpl implements HoadonService {
 			ctTrangthai.setId(ctTrangthaiId);
 			chitietTrangThaiRepository.save(ctTrangthai);
 
-			return new ApiRes(ApiErrCode.BILL_PROCESSED_SUCCESS.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_PROCESSING_SUCCESS), modelMapper.map(hoadon2,HoadonDTO.class));
+			return new ApiRes(ApiErrCode.BILL_PROCESSED_SUCCESS.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_PROCESSED_SUCCESS), modelMapper.map(hoadon2,HoadonDTO.class));
 		}
 		catch(Exception e) {
-			return new ApiRes(ApiErrCode.BILL_PROCESSED_FAIL.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_PROCESSING_FAIL), null);
+			return new ApiRes(ApiErrCode.BILL_PROCESSED_FAIL.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_PROCESSED_FAIL), null);
 		}
 	}
 	
