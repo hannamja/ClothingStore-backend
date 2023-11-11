@@ -68,6 +68,9 @@ public class AuthController {
 					.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
 			MyTaikhoanDetails tk = (MyTaikhoanDetails) authentication.getPrincipal();
+			if(tk.tk.getNhanvien()!=null && tk.tk.getNhanvien().getTrangthai().equals("1")) {
+				return ResponseEntity.ok().body(new AuthResponse());
+			}
 
 			String accessToken = jwtUtil.generateAccessToken(tk.tk);
 			AuthResponse response = new AuthResponse(tk.tk.getEmail(), accessToken);
