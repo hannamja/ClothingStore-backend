@@ -77,16 +77,24 @@ public class NhanvienController {
 			return ResponseEntity.ok(new ApiResponse(404, "Email tồn tại",null));
 		}
 		NhanvienDTO nhanvienDTO2=nhanvienService.save(nhanvien);
-		
-			Taikhoan tk = new Taikhoan();
-			tk.setEmail(nhanvienDTO2.getEmail());
-			tk.setMatkhau("123456789");
-			tk.setNhanvien(nhanvien);
-			Taikhoan tkSaved = taiKhoanRepository.save(tk);
+		Taikhoan tk = new Taikhoan();
+		tk.setEmail(nhanvienDTO2.getEmail());
+		tk.setMatkhau("Hung123");
+		tk.setNhanvien(nhanvien);
+		Taikhoan tkSaved = taiKhoanRepository.save(tk);
 			
 		return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(), "Nhan vien created successfully",
                nhanvienDTO2));
 	}
+
+	@PostMapping("/nhanvien/mod")
+	public ResponseEntity<Object> modNhanvien(@RequestBody NhanvienDTO nhanvienDTO){
+		Nhanvien nhanvien=modelMapper.map(nhanvienDTO, Nhanvien.class);
+		NhanvienDTO nhanvienDTO2=nhanvienService.save(nhanvien);
+		return ResponseEntity.ok(new ApiResponse(HttpStatus.CREATED.value(), "Nhan vien created successfully",
+				nhanvienDTO2));
+	}
+
 	@PutMapping("/nhanvien/{id}")
 	public ResponseEntity<Object> updateNhanvien(@RequestBody NhanvienDTO nhanvienDTO,@PathVariable int id){
 		Nhanvien nhanvien=nhanvienService.getNhanvienById(id);
