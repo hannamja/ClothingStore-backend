@@ -14,6 +14,8 @@ public class ApiErrCodeEnumMap {
 		apiErrCode.put(ApiErrCode.BILL_FAIL_TO_DELIVERY, "Giao đơn hàng thất bại");
 		apiErrCode.put(ApiErrCode.BILL_CANCELED_SUCCESS, "Hủy đơn thành công");
 		apiErrCode.put(ApiErrCode.BILL_CANCLED_FAIL, "Hủy đơn thất bại");
+		apiErrCode.put(ApiErrCode.BILL_PROCESSING_SUCCESS, "Xác nhận đang giao thành công");
+		apiErrCode.put(ApiErrCode.BILL_PROCESSING_FAIL, "Xác nhận đang giao thất bại");
 	}
 
 	public EnumMap<ApiErrCode, String> getApiErrCode() {

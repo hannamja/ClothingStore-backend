@@ -271,36 +271,41 @@ public class HoadonServiceImpl implements HoadonService {
 	}
 
 	@Override
-	public HoadonDTO processing(HoadonDTO hoadonDTO) {
+	public ApiRes processing(HoadonDTO hoadonDTO) {
 		// TODO Auto-generated method stub
-		Hoadon hoadon=hoadonConvert.toEnity(hoadonDTO);
-		Set<CtTrangthai> trangthais=hoadon.getCtTrangthais();
-		List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
-		for (CtTrangthai trangthai : trangthais) {
-	        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
-	    }
-		for (ChitietHoadonDTO cthd : cthds) {
-			Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
-			CtMathang mh = temp.get();
-			mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
-			chitietMathangRepository.save(mh);
+		try {
+			Hoadon hoadon = hoadonConvert.toEnity(hoadonDTO);
+			Set<CtTrangthai> trangthais = hoadon.getCtTrangthais();
+			List<ChitietHoadonDTO> cthds = hoadonDTO.getChitietHoadonDTO();
+			for (CtTrangthai trangthai : trangthais) {
+				// Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
+			}
+			for (ChitietHoadonDTO cthd : cthds) {
+				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
+				CtMathang mh = temp.get();
+				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer()) + cthd.getSoluong()));
+				chitietMathangRepository.save(mh);
+			}
+			Hoadon hoadon2 = hoadonRepository.save(hoadon);
+			CtTrangthai ctTrangthai = new CtTrangthai();
+			ctTrangthai.setHoadon(hoadon2);
+			Date currentDate = new Date();
+			ctTrangthai.setNgaytao(currentDate);
+			Trangthaihd trangthaihd = new Trangthaihd();
+			trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
+			trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
+			ctTrangthai.setTrangthaihd(trangthaihd);
+			CtTrangthaiId ctTrangthaiId = new CtTrangthaiId();
+			ctTrangthaiId.setMahd(hoadon2.getMahd());
+			ctTrangthaiId.setMatthd(4);
+			ctTrangthai.setId(ctTrangthaiId);
+			chitietTrangThaiRepository.save(ctTrangthai);
+
+			return new ApiRes(ApiErrCode.BILL_PROCESSING_SUCCESS.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_PROCESSING_SUCCESS), modelMapper.map(hoadon2,HoadonDTO.class));
 		}
-		Hoadon hoadon2=hoadonRepository.save(hoadon);
-		CtTrangthai ctTrangthai=new CtTrangthai();
-		ctTrangthai.setHoadon(hoadon2);
-		Date currentDate = new Date();
-		ctTrangthai.setNgaytao(currentDate);
-		Trangthaihd trangthaihd=new Trangthaihd();
-		trangthaihd.setMatthd(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getMatthd());
-		trangthaihd.setTrangthai(hoadonDTO.getChitietTrangThaiDTO().getTrangthai().getTrangthai());
-		ctTrangthai.setTrangthaihd(trangthaihd);
-		CtTrangthaiId ctTrangthaiId=new CtTrangthaiId();
-		ctTrangthaiId.setMahd(hoadon2.getMahd());
-		ctTrangthaiId.setMatthd(4);
-		ctTrangthai.setId(ctTrangthaiId);
-		chitietTrangThaiRepository.save(ctTrangthai);
-		
-		return modelMapper.map(hoadon2, HoadonDTO.class);
+		catch(Exception e) {
+			return new ApiRes(ApiErrCode.BILL_PROCESSING_FAIL.toString(),errCode.getApiErrCode().get(ApiErrCode.BILL_PROCESSING_FAIL), null);
+		}
 	}
 	
 }
