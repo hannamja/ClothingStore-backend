@@ -77,7 +77,8 @@ public class PhieunhapServicesImpl implements PhieunhapService {
 	public ImportDTO findById(Integer mapn) {
 		// TODO Auto-generated method stub
 		Optional<Phieunhap> phieunhap = phieunhapRepository.findById(mapn);
-		
-		return importConvert.toDTO(phieunhap.get(), ctPhieunhapRepository.getCT_Pn(mapn));
+		if(phieunhap.isPresent())
+		 return importConvert.toDTO(phieunhap.get(), ctPhieunhapRepository.getCT_Pn(mapn));
+		else return new ImportDTO();
 	}
 }

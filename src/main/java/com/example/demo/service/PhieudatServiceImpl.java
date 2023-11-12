@@ -71,7 +71,9 @@ public class PhieudatServiceImpl implements PhieudatService {
 	public PhieudatDTO findById(Integer mapd) {
 		// TODO Auto-generated method stub
 		Optional<Phieudat> pd = phieudatRepository.findById(mapd);
-		return phieudatConvert.toDTO(pd.get(), phieunhapRepository.getPns(mapd), ctPhieudatRepository.getCT_Pd(mapd));
+		if(pd.isPresent())
+			return phieudatConvert.toDTO(pd.get(), phieunhapRepository.getPns(mapd), ctPhieudatRepository.getCT_Pd(mapd));
+		return new PhieudatDTO();
 	}
 	@Override
 	public ApiResponse delete(Integer id) {

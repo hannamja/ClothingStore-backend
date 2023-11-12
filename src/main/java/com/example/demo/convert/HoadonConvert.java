@@ -50,6 +50,7 @@ public class HoadonConvert {
 		khachhangDTO.setMakh(hoadon.getKhachhang().getMakh());
 		khachhangDTO.setHotenkh(hoadon.getKhachhang().getHotenkh());
 		khachhangDTO.setEmail(hoadon.getKhachhang().getEmail());
+		khachhangDTO.setSdt(hoadon.getKhachhang().getSdt());
 		hoadonDTO.setKhachhang(khachhangDTO);
 		
 		hoadonDTO.setDiachi(hoadon.getDiachi());

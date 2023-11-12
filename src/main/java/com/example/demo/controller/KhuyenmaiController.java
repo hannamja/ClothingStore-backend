@@ -51,7 +51,7 @@ public class KhuyenmaiController {
 	}
 	@GetMapping("/km/{id}")
 	public ResponseEntity<Object> getById(@PathVariable int id) {
-		Khuyenmai km = khuyenmaiRepository.findById(id).get();
+		Khuyenmai km = khuyenmaiRepository.findById(id).orElse(null);
 		if(km==null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(HttpStatus.NOT_FOUND.value(),"Chất liệu khong ton tai",null));
 		}

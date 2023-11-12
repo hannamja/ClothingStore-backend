@@ -204,12 +204,12 @@ public class HoadonServiceImpl implements HoadonService {
 			for (CtTrangthai trangthai : trangthais) {
 		        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
 		    }
-			for (ChitietHoadonDTO cthd : cthds) {
-				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
-				CtMathang mh = temp.get();
-				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
-				chitietMathangRepository.save(mh);
-			}
+//			for (ChitietHoadonDTO cthd : cthds) {
+//				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
+//				CtMathang mh = temp.get();
+//				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
+//				chitietMathangRepository.save(mh);
+//			}
 			Hoadon hoadon2=hoadonRepository.save(hoadon);
 			CtTrangthai ctTrangthai=new CtTrangthai();
 			ctTrangthai.setHoadon(hoadon2);
@@ -242,12 +242,12 @@ public class HoadonServiceImpl implements HoadonService {
 			for (CtTrangthai trangthai : trangthais) {
 		        // Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
 		    }
-			for (ChitietHoadonDTO cthd : cthds) {
-				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
-				CtMathang mh = temp.get();
-				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
-				chitietMathangRepository.save(mh);
-			}
+//			for (ChitietHoadonDTO cthd : cthds) {
+//				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
+//				CtMathang mh = temp.get();
+//				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer())+cthd.getSoluong()));
+//				chitietMathangRepository.save(mh);
+//			}
 			Hoadon hoadon2=hoadonRepository.save(hoadon);
 			CtTrangthai ctTrangthai=new CtTrangthai();
 			ctTrangthai.setHoadon(hoadon2);
@@ -280,12 +280,12 @@ public class HoadonServiceImpl implements HoadonService {
 			for (CtTrangthai trangthai : trangthais) {
 				// Thực hiện các thao tác với từng đối tượng CtTrangthai ở đây
 			}
-			for (ChitietHoadonDTO cthd : cthds) {
-				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
-				CtMathang mh = temp.get();
-				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer()) + cthd.getSoluong()));
-				chitietMathangRepository.save(mh);
-			}
+//			for (ChitietHoadonDTO cthd : cthds) {
+//				Optional<CtMathang> temp = chitietMathangRepository.findById(cthd.getChitietMathangDTO().getId());
+//				CtMathang mh = temp.get();
+//				mh.setCurrentNumbeer(String.valueOf(Integer.parseInt(mh.getCurrentNumbeer()) + cthd.getSoluong()));
+//				chitietMathangRepository.save(mh);
+//			}
 			Hoadon hoadon2 = hoadonRepository.save(hoadon);
 			CtTrangthai ctTrangthai = new CtTrangthai();
 			ctTrangthai.setHoadon(hoadon2);
