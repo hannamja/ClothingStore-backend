@@ -15,7 +15,6 @@ public class HoadonDTO {
 	private KhachhangDTO khachhang;
 	private NhanvienDTO nhanvien;
 	private ShipperDTO shipper;
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date ngaytao;
 	private Integer tongtien;
 	private String diachi;
